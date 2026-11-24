@@ -1,0 +1,1874 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YKS'yi Veriyle Okumak | 2025–2026–2027 Hazırlığı</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              200: '#c7d2fe',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              800: '#3730a3',
+              900: '#1e1b4b',
+              navy: '#0f172a',
+              cardDark: '#1e293b'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+    }
+    .slide-view {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+      transform: translateY(4px);
+    }
+    .slide-view.active {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+    }
+    .dark .glass-card {
+      background: rgba(30, 41, 59, 0.9);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(51, 65, 85, 0.8);
+    }
+    table { width: 100%; border-collapse: separate; border-spacing: 0; }
+    th { padding: 8px 12px; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid #e2e8f0; }
+    td { padding: 7px 12px; font-size: 12px; border-bottom: 1px solid #f1f5f9; }
+    .dark th { border-bottom-color: #334155; }
+    .dark td { border-bottom-color: #1e293b; }
+    .badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 9999px; font-size: 11px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+    .badge-rose { background: #fee2e2; color: #991b1b; }
+    .badge-blue { background: #dbeafe; color: #1e40af; }
+    .badge-green { background: #dcfce7; color: #166534; }
+    .badge-amber { background: #fef3c7; color: #92400e; }
+    .badge-purple { background: #f3e8ff; color: #6b21a8; }
+    /* Özel kaydırma çubuğu */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+    .dark ::-webkit-scrollbar-thumb { background: #475569; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white font-sans antialiased">
+
+  <!-- ================= ÜST KONTROL & BİLGİ ÇUBUĞU ================= -->
+  <header class="bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-2.5 flex items-center justify-between text-xs sticky top-0 z-40">
+    <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="font-extrabold tracking-wide uppercase text-indigo-400">YKS'Yİ VERİYLE OKUMAK</span>
+      </div>
+      <span class="text-slate-600">|</span>
+      <span class="hidden md:inline text-slate-400 text-[11px]">12. Sınıf & 2027 Hazırlığı · YÖK Atlas & ÖSYM Veri Analizi</span>
+    </div>
+
+    <!-- Hızlı Kontroller -->
+    <div class="flex items-center gap-3">
+      <!-- Süre Sayacı -->
+      <div id="presentationTimer" class="font-mono text-slate-300 bg-slate-800 px-2.5 py-1 rounded border border-slate-700 flex items-center gap-1.5 cursor-pointer" title="Sunum Sayacı (Sıfırlamak için tıkla)">
+        <span>⏱️</span>
+        <span id="timerDisplay">00:00</span>
+      </div>
+
+      <!-- Slayt İndeksi -->
+      <div class="flex items-center gap-1.5 font-mono bg-indigo-950/80 text-indigo-300 px-3 py-1 rounded-full border border-indigo-800/80 font-bold">
+        <span id="currentSlideNum">1</span>
+        <span class="text-indigo-500">/</span>
+        <span>38</span>
+      </div>
+
+      <!-- Menü / Dizin Butonu -->
+      <button onclick="toggleIndexModal()" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition" title="Tüm Slaytları Gör (M tuşu)">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/></svg>
+      </button>
+
+      <!-- Tam Ekran -->
+      <button onclick="toggleFullScreen()" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition" title="Tam Ekran (F tuşu)">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ================= İLERLEME ÇUBUĞU ================= -->
+  <div class="w-full bg-slate-900 h-1">
+    <div id="progressBar" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-1 transition-all duration-300" style="width: 2.63%;"></div>
+  </div>
+
+  <!-- ================= ANA SLAYT ALANI (16:9 Oran ve Odaklı Görünüm) ================= -->
+  <main class="flex-1 flex items-center justify-center p-3 sm:p-5 md:p-8 max-w-6xl w-full mx-auto">
+    <div id="presentationBox" class="w-full bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden min-h-[580px] flex flex-col justify-between p-6 sm:p-8 md:p-10 relative">
+
+      <!-- SLAYT 1 -->
+      <div class="slide-view active flex-col justify-between h-full space-y-6" data-slide="1" data-title="Kapak: YKS'yi Veriyle Okumak">
+        <div class="space-y-3">
+          <div class="inline-block px-3 py-1 bg-indigo-500/20 border border-indigo-500/40 rounded-full text-indigo-300 text-xs font-bold tracking-wider uppercase">
+            12. SINIF · 2027 YKS HAZIRLIĞI
+          </div>
+          <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">
+            YKS'yi Veriyle Okumak
+          </h1>
+          <p class="text-base sm:text-lg text-slate-300 max-w-2xl font-medium leading-relaxed">
+            2025 ve 2026 verileri ne söylüyor, 2027'de hedefini ve çalışma stratejini nasıl konumlandırmalısın?
+          </p>
+        </div>
+
+        <!-- 4 Temel Gösterge Kartı -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-slate-800">
+          <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+            <div class="text-2xl sm:text-3xl font-black text-indigo-400 font-mono">2,26 M</div>
+            <div class="text-xs text-slate-300 mt-1 font-semibold">2026 TYT Adayı</div>
+            <div class="text-[10px] text-slate-400 mt-0.5">Sınava fiilen giren aday</div>
+          </div>
+          <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+            <div class="text-2xl sm:text-3xl font-black text-emerald-400 font-mono">379 Bin</div>
+            <div class="text-xs text-slate-300 mt-1 font-semibold">Lisans Kontenjanı</div>
+            <div class="text-[10px] text-slate-400 mt-0.5">2026 genel toplam</div>
+          </div>
+          <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+            <div class="text-2xl sm:text-3xl font-black text-amber-400 font-mono">12.239</div>
+            <div class="text-xs text-slate-300 mt-1 font-semibold">Lisans Programı</div>
+            <div class="text-[10px] text-slate-400 mt-0.5">YÖK Atlas'ta taranan</div>
+          </div>
+          <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+            <div class="text-2xl sm:text-3xl font-black text-rose-400 font-mono">4 Yıl</div>
+            <div class="text-xs text-slate-300 mt-1 font-semibold">Trend Analizi</div>
+            <div class="text-[10px] text-slate-400 mt-0.5">2023–2026 başarı sırası</div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between text-xs text-slate-400 pt-2 border-t border-slate-800/60">
+          <div>Veri: ÖSYM 2025–2026 YKS Sayısal Bilgileri · YÖK Atlas · Ekim 2026</div>
+          <div class="font-bold text-slate-200">Abdulsamet AĞDAŞ · Psikolojik Danışman</div>
+        </div>
+      </div>
+
+      <!-- SLAYT 2 -->
+      <div class="slide-view flex-col justify-between h-full space-y-6" data-slide="2" data-title="Temel İlke: Veriyi Okumak">
+        <div>
+          <span class="text-xs font-bold text-amber-400 uppercase tracking-widest">TEMEL İLKE</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Amaç tahmin etmek değil, veriyi okumayı öğrenmek</h2>
+          <p class="text-slate-400 text-sm mt-1">Rastgele tahminler yerine kanıta ve sayılara dayalı 4 adımlı rota.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="bg-slate-800/70 p-5 rounded-xl border-t-4 border-indigo-500 border-x border-b border-slate-700/60">
+            <div class="text-2xl font-black text-indigo-400 font-mono">1</div>
+            <div class="font-bold text-white text-base mt-2">Eğilimi gör</div>
+            <div class="text-xs text-slate-300 mt-1.5 leading-relaxed">2025 → 2026 ve 2023 → 2026 arasında bölümlerde ve kitlede ne değişti?</div>
+          </div>
+          <div class="bg-slate-800/70 p-5 rounded-xl border-t-4 border-blue-500 border-x border-b border-slate-700/60">
+            <div class="text-2xl font-black text-blue-400 font-mono">2</div>
+            <div class="font-bold text-white text-base mt-2">Olasılığı tart</div>
+            <div class="text-xs text-slate-300 mt-1.5 leading-relaxed">Eğilim sürerse 2027'de hangi senaryolar mümkün, hangi bölümler sıkışır?</div>
+          </div>
+          <div class="bg-slate-800/70 p-5 rounded-xl border-t-4 border-emerald-500 border-x border-b border-slate-700/60">
+            <div class="text-2xl font-black text-emerald-400 font-mono">3</div>
+            <div class="font-bold text-white text-base mt-2">Hedefi konumla</div>
+            <div class="text-xs text-slate-300 mt-1.5 leading-relaxed">Tek bir sıra veya puan değil; iddialı, gerçekçi ve güvenli sıralama aralığı belirle.</div>
+          </div>
+          <div class="bg-slate-800/70 p-5 rounded-xl border-t-4 border-rose-500 border-x border-b border-slate-700/60">
+            <div class="text-2xl font-black text-rose-400 font-mono">4</div>
+            <div class="font-bold text-white text-base mt-2">Stratejini kur</div>
+            <div class="text-xs text-slate-300 mt-1.5 leading-relaxed">Çalışma planını ve ders ağırlıklarını netin gerçek getiri değerine göre yap.</div>
+          </div>
+        </div>
+
+        <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700 flex flex-wrap gap-4 items-center text-xs">
+          <div class="flex items-center gap-2">
+            <span class="badge bg-slate-700 text-slate-200">GERÇEKLEŞEN VERİ</span>
+            <span class="text-slate-300">ÖSYM ve YÖK Atlas'ın yayımladığı resmi sayılar</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="badge bg-rose-900/60 text-rose-300 border border-rose-700">SENARYO / TAHMİN</span>
+            <span class="text-slate-300">Veriye dayalı projeksiyon; mutlak kesinlik içermez</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLAYT 3 -->
+      <div class="slide-view flex-col justify-between h-full space-y-6" data-slide="3" data-title="Veri Seti ve Yöntem">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">VERİ SETİ VE YÖNTEM</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Hangi veriyi, nasıl okuduk?</h2>
+          <p class="text-slate-400 text-sm mt-1">Veri biliminde yanıltıcı ortalamalardan kaçınmak için 3 yöntem kuralı.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div class="space-y-3 bg-slate-800/50 p-5 rounded-xl border border-slate-700">
+            <div class="font-bold text-white text-sm border-b border-slate-700 pb-2">Kullanılan Resmi Kaynaklar</div>
+            <ul class="space-y-2 text-xs text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="text-indigo-400">▹</span>
+                <span><strong>ÖSYM 2025 ve 2026 YKS Sayısal Bilgiler:</strong> Aday sayıları, test ortalamaları, puan yığılım dağılımları.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-indigo-400">▹</span>
+                <span><strong>ÖSYM Yerleştirme Sayısal Bilgiler:</strong> Kontenjan, yerleşen, boş kalan kontenjan.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-indigo-400">▹</span>
+                <span><strong>ÖSYM Tablo 4 (2025, 2026):</strong> Program bazında genel kontenjan ve en küçük puan.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-indigo-400">▹</span>
+                <span><strong>YÖK Atlas (yokatlas.yok.gov.tr):</strong> 12.239 programın 2023–2026 başarı sıraları ve 2023–2025 son yerleşen netleri.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="space-y-3 bg-indigo-950/40 p-5 rounded-xl border border-indigo-800/60">
+            <div class="font-bold text-indigo-300 text-sm border-b border-indigo-800/60 pb-2">Üç Yöntem Kuralı</div>
+            <div class="space-y-3 text-xs text-slate-300">
+              <div>
+                <strong class="text-white block">1. Aynı programları karşılaştır:</strong>
+                Yeni açılan veya kapanan programlar ortalamayı bozmasın diye iki yılda da var olan aynı programlar kıyaslandı.
+              </div>
+              <div>
+                <strong class="text-white block">2. Piyasaya göre oku (Göreli Talep):</strong>
+                Göreli talep endeksi = Bölümün sıra değişimi — Aynı puan türündeki tüm programların değişimi (-%9 veya -%15).
+              </div>
+              <div>
+                <strong class="text-white block">3. Talep dolaylı ölçülür:</strong>
+                Program bazında tercih sayısı açıklanmadığı için talep; sıra değişimi, doluluk ve boş kontenjanla okundu.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-[11px] text-slate-400">YÖK Atlas verileri Ekim 2026'da çekilmiştir. İki yılda da açık olan devlet ve vakıf örgün programlar baz alınmıştır.</div>
+      </div>
+
+      <!-- SLAYT 4 -->
+      <div class="slide-view flex-col justify-between h-full space-y-4" data-slide="4" data-title="Temel Sayılar: 2025 -> 2026">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">1 · 2025 → 2026 DEĞİŞİMİ</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Temel sayılar: 2025 → 2026 → Değişim</h2>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start">
+          <div class="lg:col-span-2 overflow-x-auto border border-slate-700 rounded-xl bg-slate-900">
+            <table>
+              <thead>
+                <tr class="text-slate-400">
+                  <th>Gösterge</th>
+                  <th>2025</th>
+                  <th>2026</th>
+                  <th>Değişim</th>
+                </tr>
+              </thead>
+              <tbody class="text-slate-200">
+                <tr><td>TYT'ye giren aday</td><td class="font-mono">2.351.641</td><td class="font-mono">2.255.076</td><td class="font-mono font-bold text-rose-400">-%4,1</td></tr>
+                <tr><td>AYT'ye giren aday</td><td class="font-mono">1.549.940</td><td class="font-mono">1.473.113</td><td class="font-mono font-bold text-rose-400">-%5,0</td></tr>
+                <tr><td>Son sınıf aday (TYT geçerli)</td><td class="font-mono">825.489</td><td class="font-mono">788.804</td><td class="font-mono font-bold text-rose-400">-%4,4</td></tr>
+                <tr><td>SAY puanı hesaplanan</td><td class="font-mono">1.291.531</td><td class="font-mono">1.135.718</td><td class="font-mono font-bold text-rose-400">-%12,1</td></tr>
+                <tr><td>Tercih yapan aday</td><td class="font-mono">1.412.734</td><td class="font-mono">1.279.439</td><td class="font-mono font-bold text-rose-400">-%9,4</td></tr>
+                <tr><td>Lisans kontenjanı</td><td class="font-mono">402.294</td><td class="font-mono">379.228</td><td class="font-mono font-bold text-rose-400">-%5,7</td></tr>
+                <tr><td>Lisansa yerleşen</td><td class="font-mono">366.941</td><td class="font-mono">349.346</td><td class="font-mono font-bold text-rose-400">-%4,8</td></tr>
+                <tr><td>Boş kalan lisans kontenjanı</td><td class="font-mono">35.353</td><td class="font-mono">29.882</td><td class="font-mono font-bold text-emerald-400">-%15,5</td></tr>
+                <tr class="bg-slate-800/60 font-semibold"><td>Yerleşenlerde son sınıf payı</td><td class="font-mono">%30,1</td><td class="font-mono">%29,9</td><td class="font-mono text-slate-400">≈ Sabit</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700 space-y-3 text-xs leading-relaxed">
+            <div class="font-bold text-white text-sm">💡 Bu veri bize ne söylüyor?</div>
+            <p class="text-slate-300">
+              <strong>Yarışın oranı değişmedi:</strong> Aday da kontenjan da yaklaşık %5 azaldı. Dolayısıyla "aday sayısı azaldı, yerleşmek kolaylaştı" denemez.
+            </p>
+            <p class="text-slate-300">
+              <strong>Rakiplerin çoğu mezun:</strong> Lisansa yerleşen her 10 öğrenciden yalnızca 3'ü son sınıf öğrencisidir. Kalan %70'i mezun gruptur.
+            </p>
+            <p class="text-slate-300">
+              <strong>SAY'daki keskin düşüş (-%12):</strong> Sayısal puanı hesaplanan adayın azalması, üst dilimlerde değil alt puan bantlarında gerçekleşti.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLAYT 5 -->
+      <div class="slide-view flex-col justify-between h-full space-y-5" data-slide="5" data-title="Grafik 1: Aday, Kontenjan ve Yerleşen">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">1 · GRAFİK 1</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Aday, kontenjan ve yerleşen birlikte azaldı</h2>
+          <p class="text-slate-400 text-sm mt-1">Her şey küçüldü: Sistem genelinde paralel bir daralma yaşandı.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+          <div class="space-y-3 bg-slate-800/40 p-4 rounded-xl border border-slate-700">
+            <div class="space-y-2 text-xs">
+              <div class="flex justify-between items-center">
+                <span class="text-slate-300">TYT Başvuran Aday:</span>
+                <span class="badge badge-rose font-mono">-%5,3</span>
+              </div>
+              <div class="w-full bg-slate-800 rounded-full h-2.5">
+                <div class="bg-rose-500 h-2.5 rounded-full" style="width: 85%"></div>
+              </div>
+
+              <div class="flex justify-between items-center pt-2">
+                <span class="text-slate-300">TYT Giren Aday:</span>
+                <span class="badge badge-rose font-mono">-%4,1</span>
+              </div>
+              <div class="w-full bg-slate-800 rounded-full h-2.5">
+                <div class="bg-rose-500 h-2.5 rounded-full" style="width: 82%"></div>
+              </div>
+
+              <div class="flex justify-between items-center pt-2">
+                <span class="text-slate-300">Lisans Kontenjanı:</span>
+                <span class="badge badge-rose font-mono">-%5,7</span>
+              </div>
+              <div class="w-full bg-slate-800 rounded-full h-2.5">
+                <div class="bg-rose-500 h-2.5 rounded-full" style="width: 80%"></div>
+              </div>
+
+              <div class="flex justify-between items-center pt-2">
+                <span class="text-slate-300">SAY Puanı Hesaplanan:</span>
+                <span class="badge badge-rose font-mono">-%12,1</span>
+              </div>
+              <div class="w-full bg-slate-800 rounded-full h-2.5">
+                <div class="bg-rose-600 h-2.5 rounded-full" style="width: 65%"></div>
+              </div>
+
+              <div class="flex justify-between items-center pt-2">
+                <span class="text-slate-300">Boş Kalan Kontenjan:</span>
+                <span class="badge badge-rose font-mono">-%15,5</span>
+              </div>
+              <div class="w-full bg-slate-800 rounded-full h-2.5">
+                <div class="bg-rose-700 h-2.5 rounded-full" style="width: 50%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-slate-800/70 p-5 rounded-xl border border-slate-700 text-xs space-y-3 leading-relaxed">
+            <div class="font-bold text-indigo-300 text-sm">Temel Çıkarımlar</div>
+            <div>
+              <strong class="text-white block">Kontenjan adaylarla aynı hızda küçüldü:</strong>
+              Lisans kontenjanı (-%5,7) ile sınava giren aday sayısı (-%4,1) paralel geriledi. Girmek kolaylaşmadı.
+            </div>
+            <div>
+              <strong class="text-white block">Üst bantta kalabalıklaşma oldu:</strong>
+              SAY'daki -%12'lik düşüş alt puanlardaki baraj aşamayan veya AYT çözmeyen adaylardan kaynaklandı. Üst sıralarda yığılma arttı!
+            </div>
+            <div>
+              <strong class="text-white block">Boş yerler azaldı:</strong>
+              Lisans genelinde boş kalan yerler %15,5 azaldı; boşluklar neredeyse bütünüyle vakıf üniversitelerine aittir.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLAYT 6 -->
+      <div class="slide-view flex-col justify-between h-full space-y-4" data-slide="6" data-title="Kontenjan, Yerleşme ve Boş Kalan Yerler">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">1 · LİSANS DETAYLARI</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Kontenjan, yerleşme ve boş kalan yerler (lisans)</h2>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start">
+          <div class="lg:col-span-2 overflow-x-auto border border-slate-700 rounded-xl bg-slate-900">
+            <table>
+              <thead>
+                <tr class="text-slate-400">
+                  <th>Lisans Kategorisi</th>
+                  <th>2025</th>
+                  <th>2026</th>
+                  <th>Değişim</th>
+                </tr>
+              </thead>
+              <tbody class="text-slate-200">
+                <tr><td>Devlet Kontenjan</td><td class="font-mono">280.900</td><td class="font-mono">265.356</td><td class="font-mono text-rose-400 font-bold">-%5,5</td></tr>
+                <tr class="bg-emerald-950/20"><td>Devlet Doluluk Oranı</td><td class="font-mono">%98,9</td><td class="font-mono">%99,2</td><td class="font-mono text-emerald-400 font-bold">+0,3 puan</td></tr>
+                <tr><td>Devlet Boş Kontenjan</td><td class="font-mono">3.022</td><td class="font-mono">2.255</td><td class="font-mono text-rose-400 font-bold">-%25,4</td></tr>
+                <tr><td>Vakıf Kontenjan</td><td class="font-mono">107.764</td><td class="font-mono">99.638</td><td class="font-mono text-rose-400 font-bold">-%7,5</td></tr>
+                <tr><td>Vakıf Doluluk Oranı</td><td class="font-mono">%74,8</td><td class="font-mono">%78,1</td><td class="font-mono text-emerald-400 font-bold">+3,3 puan</td></tr>
+                <tr><td>Vakıf Boş Kontenjan</td><td class="font-mono">27.131</td><td class="font-mono">21.811</td><td class="font-mono text-rose-400 font-bold">-%19,6</td></tr>
+                <tr><td>KKTC Boş Kontenjan</td><td class="font-mono">4.569</td><td class="font-mono">5.239</td><td class="font-mono text-amber-400 font-bold">+%14,7</td></tr>
+                <tr><td>Ön Lisans Kontenjanı</td><td class="font-mono">310.727</td><td class="font-mono">297.771</td><td class="font-mono text-rose-400 font-bold">-%4,2</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700 space-y-3 text-xs leading-relaxed">
+            <div class="font-bold text-white text-sm">💡 Bu veri bize ne söylüyor?</div>
+            <p class="text-slate-300">
+              <strong>Devlette yerler %99 doluyor:</strong> Devlet üniversitesi hedefinde "belki boş kalır girerim" beklentisi tamamen gerçek dışıdır. Boş kalan yer sayısı sadece 2.255'tir.
+            </p>
+            <p class="text-slate-300">
+              <strong>Boş yerlerin %91'i vakıflarda:</strong> Türkiye'deki boş lisans yerlerinin neredeyse tamamı vakıf üniversitelerindedir. Bu bir fırsattır ancak ücret ve burs koşullarıyla tartılmalıdır.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLAYT 7 -->
+      <div class="slide-view flex-col justify-between h-full space-y-5" data-slide="7" data-title="SAY Testlerinin Ortalama Netleri">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">1 · GRAFİK 2 · SAY TESTLERİ</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">SAY testlerinin ortalamaları nasıl değişti?</h2>
+          <p class="text-slate-400 text-sm mt-1">TYT Türkçe düştü, AYT Fen testlerinde ortalamalar yükseldi.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+          <div class="overflow-x-auto border border-slate-700 rounded-xl bg-slate-900">
+            <table>
+              <thead>
+                <tr class="text-slate-400">
+                  <th>Test (Soru Sayısı)</th>
+                  <th>2025 Net</th>
+                  <th>2026 Net</th>
+                  <th>Fark</th>
+                </tr>
+              </thead>
+              <tbody class="text-slate-200">
+                <tr><td>TYT Türkçe (40)</td><td class="font-mono">21,2</td><td class="font-mono">20,1</td><td class="font-mono text-rose-400 font-bold">-1,1</td></tr>
+                <tr><td>TYT Sosyal (20)</td><td class="font-mono">9,5</td><td class="font-mono">10,0</td><td class="font-mono text-emerald-400 font-bold">+0,5</td></tr>
+                <tr><td>TYT Temel Mat (40)</td><td class="font-mono">6,0</td><td class="font-mono">6,4</td><td class="font-mono text-emerald-400 font-bold">+0,4</td></tr>
+                <tr><td>TYT Fen (20)</td><td class="font-mono">4,1</td><td class="font-mono">3,9</td><td class="font-mono text-rose-400 font-bold">-0,2</td></tr>
+                <tr class="bg-indigo-950/30"><td><strong>AYT Matematik (40)</strong></td><td class="font-mono">6,8</td><td class="font-mono">7,1</td><td class="font-mono text-emerald-400 font-bold">+0,3</td></tr>
+                <tr><td>AYT Fizik (14)</td><td class="font-mono">2,4</td><td class="font-mono">2,6</td><td class="font-mono text-emerald-400 font-bold">+0,2</td></tr>
+                <tr><td>AYT Kimya (13)</td><td class="font-mono">1,8</td><td class="font-mono">2,1</td><td class="font-mono text-emerald-400 font-bold">+0,3</td></tr>
+                <tr><td>AYT Biyoloji (13)</td><td class="font-mono">2,6</td><td class="font-mono">3,0</td><td class="font-mono text-emerald-400 font-bold">+0,4</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700 space-y-3 text-xs leading-relaxed">
+            <div class="font-bold text-indigo-300 text-sm">💡 Bu veri bize ne söylüyor?</div>
+            <p class="text-slate-300">
+              <strong>Ortalama aday 7 net yapıyor:</strong> 40 soruluk AYT Matematikte ortalama aday 7,1 net, 40 soruluk TYT Matematikte 6,4 net yapıyor.
+            </p>
+            <p class="text-slate-300">
+              <strong>Matematikteki her net kitlenin önüne taşır:</strong> Türkiye ortalaması bu kadar düşükken, matematikte yapacağınız her +1 net sizi on binlerce kişinin önüne fırlatır.
+            </p>
+            <p class="text-slate-300">
+              <strong>Zorluk her yıl değişir:</strong> "Geçen yıl şu kadar net yetmişti" demek yanıltıcıdır; sınav kolaylaşırsa aynı netle sıralamanız geriye düşebilir.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLAYT 8 -->
+      <div class="slide-view flex-col justify-between h-full space-y-5" data-slide="8" data-title="EA Testlerinin Ortalama Netleri">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">1 · GRAFİK 2 · EA TESTLERİ</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">EA testlerinin ortalamaları nasıl değişti?</h2>
+          <p class="text-slate-400 text-sm mt-1">AYT Tarih-1 ve Coğrafya-1 ortalamaları yükseldi, TDE yerinde kaldı.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+          <div class="overflow-x-auto border border-slate-700 rounded-xl bg-slate-900">
+            <table>
+              <thead>
+                <tr class="text-slate-400">
+                  <th>Test (Soru Sayısı)</th>
+                  <th>2025 Net</th>
+                  <th>2026 Net</th>
+                  <th>Fark</th>
+                </tr>
+              </thead>
+              <tbody class="text-slate-200">
+                <tr><td>TYT Türkçe (40)</td><td class="font-mono">21,2</td><td class="font-mono">20,1</td><td class="font-mono text-rose-400 font-bold">-1,1</td></tr>
+                <tr><td>TYT Sosyal (20)</td><td class="font-mono">9,5</td><td class="font-mono">10,0</td><td class="font-mono text-emerald-400 font-bold">+0,5</td></tr>
+                <tr><td>TYT Temel Mat (40)</td><td class="font-mono">6,0</td><td class="font-mono">6,4</td><td class="font-mono text-emerald-400 font-bold">+0,4</td></tr>
+                <tr class="bg-indigo-950/30"><td><strong>AYT Matematik (40)</strong></td><td class="font-mono">6,8</td><td class="font-mono">7,1</td><td class="font-mono text-emerald-400 font-bold">+0,3</td></tr>
+                <tr><td>AYT TDE (24)</td><td class="font-mono">6,6</td><td class="font-mono">6,5</td><td class="font-mono text-rose-400 font-bold">-0,1</td></tr>
+                <tr><td>AYT Tarih-1 (10)</td><td class="font-mono">2,2</td><td class="font-mono">2,9</td><td class="font-mono text-emerald-400 font-bold">+0,7</td></tr>
+                <tr><td>AYT Coğrafya-1 (6)</td><td class="font-mono">1,4</td><td class="font-mono">1,9</td><td class="font-mono text-emerald-400 font-bold">+0,5</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700 space-y-3 text-xs leading-relaxed">
+            <div class="font-bold text-indigo-300 text-sm">💡 Bu veri bize ne söylüyor?</div>
+            <p class="text-slate-300">
+              <strong>Tarih ve Coğrafya kolaylaştı:</strong> AYT Tarih-1 (+0,7) ve Coğrafya-1 (+0,5) netleri yükseldi. Kolaylaşan testte aynı sıra için daha çok net gerekir.
+            </p>
+            <p class="text-slate-300">
+              <strong>EA'da matematik en güçlü ayırıcıdır:</strong> Eşit Ağırlıkta edebiyat ve tarih belirli bir taban oluşturur; sıralamayı asıl yukarı patlatan AYT Matematik netidir.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLAYT 9 -->
+      <div class="slide-view flex-col justify-between h-full space-y-5" data-slide="9" data-title="SAY Puan Yığılması">
+        <div>
+          <span class="text-xs font-bold text-rose-400 uppercase tracking-widest">1 · SAY PUAN VE SIRALAMA DAĞILIMI</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Aynı puan, bu yıl farklı bir sıralama demek</h2>
+          <p class="text-slate-400 text-sm mt-1">2026'da 450 SAY puanı ~46 bin değil ~64 bininci sıraya denk geldi!</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+          <div class="bg-slate-800/60 p-5 rounded-xl border border-slate-700 space-y-3">
+            <div class="text-xs font-bold text-slate-300 border-b border-slate-700 pb-2">SAY Yerleştirme Puanı ve Üstü Aday Sayısı (Yığılma)</div>
+            <div class="space-y-2 text-xs">
+              <div class="flex justify-between items-center p-2 rounded bg-slate-900 border border-slate-800">
+                <span>500+ Puan Alan Aday:</span>
+                <span class="font-mono text-slate-400">2025: 7,1 bin → <strong class="text-rose-400">2026: 13 bin (+%83)</strong></span>
+              </div>
+              <div class="flex justify-between items-center p-2 rounded bg-slate-900 border border-slate-800">
+                <span>450+ Puan Alan Aday:</span>
+                <span class="font-mono text-slate-400">2025: 46 bin → <strong class="text-rose-400">2026: 64 bin (+%38)</strong></span>
+              </div>
+              <div class="flex justify-between items-center p-2 rounded bg-slate-900 border border-slate-800">
+                <span>400+ Puan Alan Aday:</span>
+                <span class="font-mono text-slate-400">2025: 87 bin → <strong class="text-rose-400">2026: 105 bin (+%21)</strong></span>
+              </div>
+              <div class="flex justify-between items-center p-2 rounded bg-slate-900 border border-slate-800">
+                <span>350+ Puan Alan Aday:</span>
+                <span class="font-mono text-slate-400">2025: 174 bin → <strong class="text-rose-400">2026: 191 bin (+%10)</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700 space-y-3 text-xs leading-relaxed">
+            <div class="font-bold text-rose-300 text-sm">💡 Bu veri bize ne söylüyor?</div>
+            <p class="text-slate-300">
+              <strong>Üst puanlar kalabalıklaştı:</strong> 450+ SAY puanı alan aday sayısı 46 binden 64 bine fırladı (+%38 artış).
+            </p>
+            <p class="text-slate-300">
+              <strong>Puan hedefini unutun:</strong> 2025'te 450 puanla girilen yere 2026'da 450 alan aday 18 bin kişi geride kaldığı için giremedi. Puanlar yıllar arasında karşılaştırılamaz; hedefini <strong>sıralamayla</strong> koy.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLAYT 10 -->
+      <div class="slide-view flex-col justify-between h-full space-y-5" data-slide="10" data-title="EA Puan Yığılması">
+        <div>
+          <span class="text-xs font-bold text-amber-400 uppercase tracking-widest">1 · EA PUAN VE SIRALAMA DAĞILIMI</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">EA'da da aynı puan, farklı sıralama</h2>
+          <p class="text-slate-400 text-sm mt-1">EA'da 410 puan: 2025'te ~20 bin iken 2026'da ~30 bininci sıra oldu.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+          <div class="bg-slate-800/60 p-5 rounded-xl border border-slate-700 space-y-3">
+            <div class="text-xs font-bold text-slate-300 border-b border-slate-700 pb-2">EA Yerleştirme Puanı ve Üstü Aday Sayısı</div>
+            <div class="space-y-2 text-xs">
+              <div class="flex justify-between items-center p-2 rounded bg-slate-900 border border-slate-800">
+                <span>450+ Puan:</span>
+                <span class="font-mono text-slate-400">2025: 8,1 bin → <strong class="text-amber-400">2026: 12 bin (+%48)</strong></span>
+              </div>
+              <div class="flex justify-between items-center p-2 rounded bg-slate-900 border border-slate-800">
+                <span>410 Puan:</span>
+                <span class="font-mono text-slate-400">2025: 20 bin → <strong class="text-amber-400">2026: 30 bin (10 bin kayma)</strong></span>
+              </div>
+              <div class="flex justify-between items-center p-2 rounded bg-slate-900 border border-slate-800">
+                <span>400+ Puan:</span>
+                <span class="font-mono text-slate-400">2025: 43 bin → <strong class="text-amber-400">2026: 59 bin (+%37)</strong></span>
+              </div>
+              <div class="flex justify-between items-center p-2 rounded bg-slate-900 border border-slate-800">
+                <span>350+ Puan:</span>
+                <span class="font-mono text-slate-400">2025: 125 bin → <strong class="text-amber-400">2026: 149 bin (+%19)</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700 space-y-3 text-xs leading-relaxed">
+            <div class="font-bold text-amber-300 text-sm">💡 Bu veri bize ne söylüyor?</div>
+            <p class="text-slate-300">
+              <strong>EA'da adaylar çok sık dizili:</strong> 2025'te 370–390 arasındaki yalnızca 20 puanda tam 34 bin aday yer aldı.
+            </p>
+            <p class="text-slate-300">
+              <strong>Birkaç puan binlerce sıra demektir:</strong> EA'da yapacağınız 1 adet matematik neti (yaklaşık 3 puan), sizi binlerce adayın önüne geçirir.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLAYT 11 -->
+      <div class="slide-view flex-col justify-between h-full space-y-6" data-slide="11" data-title="-%9 Kuralı: En Sık Yapılan Hata">
+        <div>
+          <span class="text-xs font-bold text-rose-400 uppercase tracking-widest">SIRALAMA OKURKEN EN SIK YAPILAN HATA</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Sıralama küçüldü ≠ bölüm zorlaştı</h2>
+        </div>
+
+        <div class="bg-indigo-950/40 p-6 rounded-2xl border border-indigo-800/80 flex flex-col md:flex-row items-center gap-6">
+          <div class="text-6xl sm:text-7xl font-black text-rose-400 font-mono tracking-tight">-%9</div>
+          <div class="text-sm text-slate-200 leading-relaxed">
+            2026'da tipik bir SAY programının başarı sırası, <strong>hiçbir şey değişmese de %9 küçüldü.</strong> Aday sayısı azalınca herkesin sıra numarası otomatik olarak küçülür. Bu etki EA'da <strong>%15</strong>, SÖZ'de <strong>%24</strong> oldu.
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="bg-slate-800/70 p-4 rounded-xl border border-slate-700 space-y-1.5">
+            <div class="font-bold text-rose-400 text-sm">Sırası %9'dan hızlı küçüldüyse:</div>
+            <p class="text-slate-300">→ Bölüm <strong>gerçekten zorlaştı</strong>, talep arttı (örn: Hukuk, Tıp, Hemşirelik).</p>
+          </div>
+          <div class="bg-slate-800/70 p-4 rounded-xl border border-slate-700 space-y-1.5">
+            <div class="font-bold text-emerald-400 text-sm">Sırası %9'dan az küçüldüyse / yerinde saydıysa:</div>
+            <p class="text-slate-300">→ Bölüm <strong>göreli olarak kolaylaştı</strong>, talep azaldı (örn: Diş Hekimliği, Bilgisayar).</p>
+          </div>
+        </div>
+
+        <div class="text-[11px] text-slate-400">
+          Hesaplama: İki yılda da başarı sırası olan aynı örgün programların medyan değişimi (SAY n≈4.000, YÖK Atlas). Bu farka "göreli talep endeksi" denir.
+        </div>
+      </div>
+
+      <!-- SLAYT 12 -->
+      <div class="slide-view flex-col justify-between h-full space-y-4" data-slide="12" data-title="Seçili Bölümler: 2025 -> 2026">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">2 · BÖLÜM TRENDLERİ</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Seçili bölümler: 2025 → 2026 → Değişim</h2>
+        </div>
+
+        <div class="overflow-x-auto border border-slate-700 rounded-xl bg-slate-900">
+          <table>
+            <thead>
+              <tr class="text-slate-400">
+                <th>Bölüm (Puan Türü)</th>
+                <th>Kontenjan 25 → 26</th>
+                <th>Medyan Sıra 25 → 26</th>
+                <th>Göreli Talep</th>
+                <th>Yön & Durum</th>
+              </tr>
+            </thead>
+            <tbody class="text-slate-200">
+              <tr><td><strong>Hukuk (EA)</strong></td><td class="font-mono">9.514 → 8.261 (-%13)</td><td class="font-mono">19,5 bin → 14,2 bin</td><td class="font-mono font-bold text-rose-400">+9,9</td><td><span class="badge badge-rose">Talep arttı</span></td></tr>
+              <tr><td><strong>Tıp (SAY)</strong></td><td class="font-mono">18.374 → 18.269 (-%1)</td><td class="font-mono">18,2 bin → 15,7 bin</td><td class="font-mono font-bold text-rose-400">+3,9</td><td><span class="badge badge-rose">Artış (4 yıldır)</span></td></tr>
+              <tr><td><strong>Diş Hekimliği (SAY)</strong></td><td class="font-mono">6.798 → 6.047 (-%11)</td><td class="font-mono">31,2 bin → 31,4 bin</td><td class="font-mono font-bold text-blue-400">-11,7</td><td><span class="badge badge-blue">Talep azaldı</span></td></tr>
+              <tr><td><strong>Eczacılık (SAY)</strong></td><td class="font-mono">3.273 → 2.951 (-%10)</td><td class="font-mono">44,8 bin → 42,5 bin</td><td class="font-mono font-bold text-slate-400">-3,8</td><td><span class="badge bg-slate-700 text-slate-300">Dengede</span></td></tr>
+              <tr><td><strong>Elektrik-Elektronik (SAY)</strong></td><td class="font-mono">7.715 → 7.707 (0)</td><td class="font-mono">131,8 bin → 114,0 bin</td><td class="font-mono font-bold text-rose-400">+5,8</td><td><span class="badge badge-rose">Talep arttı</span></td></tr>
+              <tr><td><strong>Endüstri Müh. (SAY)</strong></td><td class="font-mono">6.980 → 7.005 (0)</td><td class="font-mono">106,0 bin → 101,2 bin</td><td class="font-mono font-bold text-slate-400">-4,7</td><td><span class="badge bg-slate-700 text-slate-300">Hafif azalış</span></td></tr>
+              <tr><td><strong>Bilgisayar Müh. (SAY)</strong></td><td class="font-mono">13.646 → 12.986 (-%5)</td><td class="font-mono">111,7 bin → 134,1 bin</td><td class="font-mono font-bold text-blue-400">-37,1</td><td><span class="badge badge-blue">Belirgin azalış</span></td></tr>
+              <tr><td><strong>Yazılım Müh. (SAY)</strong></td><td class="font-mono">4.777 → 4.266 (-%11)</td><td class="font-mono">137,0 bin → 191,9 bin</td><td class="font-mono font-bold text-blue-400">-39,4</td><td><span class="badge badge-blue">Belirgin azalış</span></td></tr>
+              <tr><td><strong>Yapay Zekâ & Veri (SAY)</strong></td><td class="font-mono">2.022 → 2.678 (+%32)</td><td class="font-mono">120,5 bin → 150,0 bin</td><td class="font-mono font-bold text-blue-400">-21,3</td><td><span class="badge badge-blue">Azalış, arz arttı</span></td></tr>
+              <tr><td><strong>Hemşirelik (SAY)</strong></td><td class="font-mono">16.149 → 16.338 (+%1)</td><td class="font-mono">149,0 bin → 122,3 bin</td><td class="font-mono font-bold text-rose-400">+8,8</td><td><span class="badge badge-rose">Talep arttı</span></td></tr>
+              <tr><td><strong>Psikoloji (EA)</strong></td><td class="font-mono">9.970 → 9.251 (-%7)</td><td class="font-mono">90,2 bin → 99,5 bin</td><td class="font-mono font-bold text-blue-400">-18,7</td><td><span class="badge badge-blue">Belirgin azalış</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="text-[11px] text-slate-400">
+          Kontenjan: ÖSYM Tablo 4 genel kontenjan (örgün). Medyan sıra: İki yılda da olan aynı devlet programları. Göreli talep: + = piyasadan hızlı zorlaştı.
+        </div>
+      </div>
+
+      <!-- SLAYT 13 -->
+      <div class="slide-view flex-col justify-between h-full space-y-5" data-slide="13" data-title="Başarı Sırası Değişimi Dağılımı">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">2 · GRAFİK 3 · TÜM PUAN TÜRLERİ</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Seçili bölümlerin başarı sırası değişimi</h2>
+          <p class="text-slate-400 text-sm mt-1">Aynı programlar karşılaştırıldığında medyan sıraların kayma yönü.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+          <div class="space-y-3 bg-slate-800/40 p-4 rounded-xl border border-slate-700 text-xs">
+            <div class="flex justify-between items-center p-2 rounded bg-slate-900">
+              <span class="font-bold text-rose-400">Hukuk (EA):</span>
+              <span class="font-mono">20 bin → 14 bin (-%27 zorlaştı)</span>
+            </div>
+            <div class="flex justify-between items-center p-2 rounded bg-slate-900">
+              <span class="font-bold text-rose-400">Tıp (SAY):</span>
+              <span class="font-mono">18 bin → 16 bin (-%13 zorlaştı)</span>
+            </div>
+            <div class="flex justify-between items-center p-2 rounded bg-slate-900">
+              <span class="font-bold text-rose-400">Hemşirelik (SAY):</span>
+              <span class="font-mono">149 bin → 122 bin (-%18 zorlaştı)</span>
+            </div>
+            <div class="flex justify-between items-center p-2 rounded bg-slate-900">
+              <span class="font-bold text-blue-400">Bilgisayar Müh.:</span>
+              <span class="font-mono">112 bin → 134 bin (+%20 geriledi)</span>
+            </div>
+            <div class="flex justify-between items-center p-2 rounded bg-slate-900">
+              <span class="font-bold text-blue-400">Yazılım Müh.:</span>
+              <span class="font-mono">137 bin → 192 bin (+%40 geriledi)</span>
+            </div>
+          </div>
+
+          <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700 space-y-3 text-xs leading-relaxed">
+            <div class="font-bold text-white text-sm">💡 Bu veri bize ne söylüyor?</div>
+            <p class="text-slate-300">
+              <strong>Hukuk ve Tıp zaten ilk 20 binde ve daha yukarı çıktı:</strong> Zirvedeki sağlık ve hukuk rekabeti gevşemek yerine daha da sıkılaştı.
+            </p>
+            <p class="text-slate-300">
+              <strong>Bilişim ailesinde tersi oldu:</strong> Yazılımda tipik sıra 137 binden 192 bine geriledi.
+            </p>
+            <p class="text-slate-300">
+              <strong>Diş Hekimliği yerinde saydı:</strong> Piyasa %9 küçüldüğü halde sıralaması sabit kalan Diş Hekimliği, göreli olarak bir yumuşama yaşamıştır.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLAYT 14 -->
+      <div class="slide-view flex-col justify-between h-full space-y-5" data-slide="14" data-title="Talebi Yükselen ve Düşen Bölümler">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">2 · GRAFİK 5 · TÜM PUAN TÜRLERİ</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Talebi yükselen ve düşen bölümler</h2>
+          <p class="text-slate-400 text-sm mt-1">Göreli talep endeksi (puan türü piyasa ortalamasına göre sıra değişimi).</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <!-- Yükselenler -->
+          <div class="bg-rose-950/20 p-4 rounded-xl border border-rose-900/60 space-y-2 text-xs">
+            <div class="font-bold text-rose-400 text-sm border-b border-rose-900/50 pb-1.5 flex justify-between">
+              <span>Talebi Yükselenler (Rekabet Arttı)</span>
+              <span>Endeks</span>
+            </div>
+            <div class="flex justify-between"><span>Ergoterapi</span><strong class="font-mono text-rose-400">+11,9%</strong></div>
+            <div class="flex justify-between"><span>Dil ve Konuşma Terapisi</span><strong class="font-mono text-rose-400">+11,2%</strong></div>
+            <div class="flex justify-between"><span>Hukuk</span><strong class="font-mono text-rose-400">+9,9%</strong></div>
+            <div class="flex justify-between"><span>Hemşirelik</span><strong class="font-mono text-rose-400">+8,8%</strong></div>
+            <div class="flex justify-between"><span>Ebelik</span><strong class="font-mono text-rose-400">+8,4%</strong></div>
+            <div class="flex justify-between"><span>Elektrik-Elektronik Müh.</span><strong class="font-mono text-rose-400">+5,8%</strong></div>
+            <div class="flex justify-between"><span>Veteriner</span><strong class="font-mono text-rose-400">+5,8%</strong></div>
+            <div class="flex justify-between"><span>İktisat</span><strong class="font-mono text-rose-400">+5,8%</strong></div>
+            <div class="flex justify-between"><span>Tıp</span><strong class="font-mono text-rose-400">+3,9%</strong></div>
+          </div>
+
+          <!-- Düşenler -->
+          <div class="bg-blue-950/20 p-4 rounded-xl border border-blue-900/60 space-y-2 text-xs">
+            <div class="font-bold text-blue-400 text-sm border-b border-blue-900/50 pb-1.5 flex justify-between">
+              <span>Talebi Azalanlar (Fırsat / Gevşeme)</span>
+              <span>Endeks</span>
+            </div>
+            <div class="flex justify-between"><span>Eczacılık</span><strong class="font-mono text-blue-400">-3,8%</strong></div>
+            <div class="flex justify-between"><span>Endüstri Müh.</span><strong class="font-mono text-blue-400">-4,7%</strong></div>
+            <div class="flex justify-between"><span>PDR</span><strong class="font-mono text-blue-400">-9,9%</strong></div>
+            <div class="flex justify-between"><span>Diş Hekimliği</span><strong class="font-mono text-blue-400">-11,7%</strong></div>
+            <div class="flex justify-between"><span>Psikoloji</span><strong class="font-mono text-blue-400">-18,7%</strong></div>
+            <div class="flex justify-between"><span>Yapay Zekâ & Veri</span><strong class="font-mono text-blue-400">-21,3%</strong></div>
+            <div class="flex justify-between"><span>Bilgisayar Müh.</span><strong class="font-mono text-blue-400">-37,1%</strong></div>
+            <div class="flex justify-between"><span>Yazılım Müh.</span><strong class="font-mono text-blue-400">-39,4%</strong></div>
+          </div>
+        </div>
+
+        <div class="bg-slate-800/60 p-3 rounded-xl border border-slate-700 text-xs text-slate-300">
+          <strong>Önemli Kural:</strong> Bir yılda ±%10–40'lık oynama normaldir. Tercih yaparken sadece tek bir yılın sıralamasına bakarak hedef kurmak son derece risklidir.
+        </div>
+      </div>
+
+      <!-- SLAYT 15 -->
+      <div class="slide-view flex-col justify-between h-full space-y-5" data-slide="15" data-title="EA Bölümlerinin Başarı Sırası Değişimi">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">2 · GRAFİK 3 · EŞİT AĞIRLIK</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">EA bölümlerinin başarı sırası değişimi</h2>
+          <p class="text-slate-400 text-sm mt-1">EA piyasa ortalaması: Sıralar kendiliğinden %14,8 küçüldü.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+          <div class="space-y-2.5 bg-slate-800/40 p-4 rounded-xl border border-slate-700 text-xs">
+            <div class="flex justify-between items-center p-2 rounded bg-slate-900">
+              <span class="font-bold text-rose-400">Maliye:</span>
+              <span class="font-mono">425 bin → 322 bin (-%24)</span>
+            </div>
+            <div class="flex justify-between items-center p-2 rounded bg-slate-900">
+              <span class="font-bold text-rose-400">Sosyal Hizmet:</span>
+              <span class="font-mono">445 bin → 329 bin (-%26)</span>
+            </div>
+            <div class="flex justify-between items-center p-2 rounded bg-slate-900">
+              <span class="font-bold text-rose-400">İktisat:</span>
+              <span class="font-mono">465 bin → 356 bin (-%24)</span>
+            </div>
+            <div class="flex justify-between items-center p-2 rounded bg-slate-900">
+              <span class="font-bold text-rose-400">Sağlık Yönetimi:</span>
+              <span class="font-mono">488 bin → 380 bin (-%22)</span>
+            </div>
+            <div class="flex justify-between items-center p-2 rounded bg-slate-900">
+              <span class="font-bold text-blue-400">Psikoloji:</span>
+              <span class="font-mono">90 bin → 99 bin (+%10 geriledi)</span>
+            </div>
+          </div>
+
+          <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700 space-y-3 text-xs leading-relaxed">
+            <div class="font-bold text-white text-sm">💡 Bu veri bize ne söylüyor?</div>
+            <p class="text-slate-300">
+              <strong>EA'da piyasa etkisi büyüktür:</strong> Tipik bir EA programının sırası kendiliğinden %15 küçüldü. Maliye, sosyal hizmet ve iktisat bunun da üzerinde (%24–26) yükseldi.
+            </p>
+            <p class="text-slate-300">
+              <strong>Psikoloji ayrıştı:</strong> Tüm piyasa öne giderken psikoloji 90 binden 99 bine gerileyerek fırsat alanı sundu.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLAYT 16 -->
+      <div class="slide-view flex-col justify-between h-full space-y-5" data-slide="16" data-title="EA'da Talebi Yükselen ve Düşenler">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">2 · GRAFİK 5 · EŞİT AĞIRLIK</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">EA'da talebi yükselen ve düşen bölümler</h2>
+          <p class="text-slate-400 text-sm mt-1">Hukuk ve ekonomi-finans yükseldi, psikoloji ve PDR geriledi.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div class="bg-rose-950/20 p-4 rounded-xl border border-rose-900/60 space-y-1.5 text-xs">
+            <div class="font-bold text-rose-400 text-sm border-b border-rose-900/50 pb-1 flex justify-between">
+              <span>EA Yükselenler</span><span>Endeks</span>
+            </div>
+            <div class="flex justify-between"><span>Ekonometri</span><strong class="font-mono text-rose-400">+15,9%</strong></div>
+            <div class="flex justify-between"><span>Sosyal Hizmet</span><strong class="font-mono text-rose-400">+13,1%</strong></div>
+            <div class="flex justify-between"><span>Maliye</span><strong class="font-mono text-rose-400">+10,4%</strong></div>
+            <div class="flex justify-between"><span>Çalışma Ekon. (ÇEKO)</span><strong class="font-mono text-rose-400">+10,1%</strong></div>
+            <div class="flex justify-between"><span>Hukuk</span><strong class="font-mono text-rose-400">+9,9%</strong></div>
+            <div class="flex justify-between"><span>Finans ve Bankacılık</span><strong class="font-mono text-rose-400">+9,4%</strong></div>
+            <div class="flex justify-between"><span>İktisat</span><strong class="font-mono text-rose-400">+5,8%</strong></div>
+          </div>
+
+          <div class="bg-blue-950/20 p-4 rounded-xl border border-blue-900/60 space-y-1.5 text-xs">
+            <div class="font-bold text-blue-400 text-sm border-b border-blue-900/50 pb-1 flex justify-between">
+              <span>EA Düşenler</span><span>Endeks</span>
+            </div>
+            <div class="flex justify-between"><span>Psikoloji</span><strong class="font-mono text-blue-400">-18,7%</strong></div>
+            <div class="flex justify-between"><span>İç Mimarlık ve Çevre Tas.</span><strong class="font-mono text-blue-400">-12,1%</strong></div>
+            <div class="flex justify-between"><span>PDR</span><strong class="font-mono text-blue-400">-9,9%</strong></div>
+            <div class="flex justify-between"><span>Havacılık Yönetimi</span><strong class="font-mono text-blue-400">-6,4%</strong></div>
+            <div class="flex justify-between"><span>Yönetim Bilişim Sis. (YBS)</span><strong class="font-mono text-blue-400">-6,3%</strong></div>
+            <div class="flex justify-between"><span>Sınıf Öğretmenliği</span><strong class="font-mono text-blue-400">-5,6%</strong></div>
+          </div>
+        </div>
+
+        <div class="text-xs text-slate-300 bg-slate-800/60 p-3 rounded-xl border border-slate-700">
+          <strong>Dikkat:</strong> Yükselenlerin çoğu 300 bin üstü banttadır (İktisadi İdari Bilimler). EA'nın orta-alt sıralarında rekabet artmaktadır.
+        </div>
+      </div>
+
+      <!-- SLAYT 17 -->
+      <div class="slide-view flex-col justify-between h-full space-y-5" data-slide="17" data-title="Kontenjan ve Başarı Sırası İlişkisi">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">2 · GRAFİK 4</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Kontenjan değişimi ve başarı sırası ilişkisi</h2>
+          <p class="text-slate-400 text-sm mt-1">Kontenjan değişimi tek başına sıralamayı belirlemiyor: Talep daha güçlü bir etken!</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div class="bg-slate-800/60 p-5 rounded-xl border border-slate-700 space-y-3 text-xs">
+            <div class="font-bold text-white text-sm">4 Matris Alanı</div>
+            <div class="p-2.5 rounded bg-rose-950/40 border border-rose-900/60">
+              <strong class="text-rose-300">1. Kontenjan Azaldı + Talep Arttı (En Sıkışık Alan):</strong>
+              <div class="text-slate-300 mt-1">Hukuk, Hemşirelik, DKT. Sıralar sert şekilde yukarı tırmandı.</div>
+            </div>
+            <div class="p-2.5 rounded bg-blue-950/40 border border-blue-900/60">
+              <strong class="text-blue-300">2. Kontenjan Azaldı ama Talep de Düştü:</strong>
+              <div class="text-slate-300 mt-1">Bilgisayar Müh, Yazılım Müh. Kontenjan kısılmasına rağmen sıralar geriledi!</div>
+            </div>
+            <div class="p-2.5 rounded bg-purple-950/40 border border-purple-900/60">
+              <strong class="text-purple-300">3. Kontenjan Arttı + Talep Düştü (Geniş Fırsat):</strong>
+              <div class="text-slate-300 mt-1">Yapay Zekâ & Veri (+%32 kontenjan artışı ile sıralar açıldı).</div>
+            </div>
+          </div>
+
+          <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700 space-y-3 text-xs leading-relaxed">
+            <div class="font-bold text-indigo-300 text-sm">💡 Bu veri bize ne söylüyor?</div>
+            <p class="text-slate-300">
+              <strong>Hukukta çifte sıkışma:</strong> Kontenjan -%13 azaltıldı + başarı sırası barajı 125 binden 100 bine çekildi.
+            </p>
+            <p class="text-slate-300">
+              <strong>Bilişimde talep düşüşü baskın:</strong> Kontenjanın %5-11 azalması dahi sıraların gerilemesini engelleyemedi; talep yönü belirleyicidir.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLAYT 18 -->
+      <div class="slide-view flex-col justify-between h-full space-y-5" data-slide="18" data-title="Tek Yıla Değil Trende Bak (4 Yıl)">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">2 · BÖLÜM TRENDLERİ · DÖRT YILLIK BAKIŞ</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Tek yıla değil, trende bak</h2>
+          <p class="text-slate-400 text-sm mt-1">Aynı programların 4 yıllık başarı sırası değişimi (2023–2026).</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-center">
+          <div class="bg-slate-800/60 p-5 rounded-xl border border-slate-700 space-y-3 text-xs font-mono">
+            <div class="font-sans font-bold text-white text-sm border-b border-slate-700 pb-2">4 Yıllık Zirve Programlar Kıyası</div>
+            <div class="p-2 rounded bg-slate-900 flex justify-between items-center">
+              <span class="text-rose-400 font-sans">ODTÜ Elektrik-Elektronik:</span>
+              <span>1.913 → <strong>1.205</strong> (Yükseldi)</span>
+            </div>
+            <div class="p-2 rounded bg-slate-900 flex justify-between items-center">
+              <span class="text-rose-400 font-sans">Hacettepe Tıp:</span>
+              <span>1.754 → <strong>1.586</strong> (Yükseldi)</span>
+            </div>
+            <div class="p-2 rounded bg-slate-900 flex justify-between items-center">
+              <span class="text-rose-400 font-sans">Ankara Ünv. Hukuk (EA):</span>
+              <span>3.242 → <strong>2.056</strong> (Yükseldi)</span>
+            </div>
+            <div class="p-2 rounded bg-slate-900 flex justify-between items-center">
+              <span class="text-blue-400 font-sans">ODTÜ Bilgisayar Müh.:</span>
+              <span>716 → <strong>2.989</strong> (Geriledi)</span>
+            </div>
+            <div class="p-2 rounded bg-slate-900 flex justify-between items-center">
+              <span class="text-blue-400 font-sans">Boğaziçi Bilgisayar Müh.:</span>
+              <span>775 → <strong>4.560</strong> (Geriledi)</span>
+            </div>
+          </div>
+
+          <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700 space-y-3 text-xs leading-relaxed">
+            <div class="font-bold text-white text-sm">💡 Bu veri bize ne söylüyor?</div>
+            <p class="text-slate-300">
+              ODTÜ Bilgisayar 4 yılda 716'dan 2.989'a gerilerken, aynı dönemde ODTÜ Elektrik-Elektronik 1.913'ten 1.205'e yükseldi.
+            </p>
+            <p class="text-slate-300">
+              <strong>Değişim tek yılda değil, yıllara yayılarak olur:</strong> Bir bölümün popülaritesi veya soğuması 3-4 yıllık bir döngüdür. Tercih yaparken mutlaka 4 yıllık grafik eğrisine bakın.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLAYT 19 -->
+      <div class="slide-view flex-col justify-between h-full space-y-5" data-slide="19" data-title="Bölümleri Dört Gruba Ayırdık">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">2 · BÖLÜM TRENDLERİ · SINIFLANDIRMA</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Bölümleri dört gruba ayırdık</h2>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-slate-800/70 p-4 rounded-xl border-t-4 border-rose-500 border-x border-b border-slate-700 space-y-2">
+            <span class="badge badge-rose">TALEBİ ARTAN</span>
+            <div class="text-xs text-slate-300 leading-relaxed">
+              Hukuk · Tıp · Hemşirelik · Ebelik · FTR · DKT · Ergoterapi · Veteriner · Elektrik-Elektronik · Makine · İktisat
+            </div>
+            <div class="text-[11px] text-rose-300 font-semibold pt-1 border-t border-slate-700">
+              Ortak nokta: Sağlık, meslek güvencesi, klasik mühendislik.
+            </div>
+          </div>
+
+          <div class="bg-slate-800/70 p-4 rounded-xl border-t-4 border-blue-500 border-x border-b border-slate-700 space-y-2">
+            <span class="badge badge-blue">TALEBİ AZALAN</span>
+            <div class="text-xs text-slate-300 leading-relaxed">
+              Bilgisayar Müh. · Yazılım Müh. · YZ & Veri · Psikoloji · PDR · Diş Hekimliği · Dijital Oyun Tasarımı · Mimarlık · YBS
+            </div>
+            <div class="text-[11px] text-blue-300 font-semibold pt-1 border-t border-slate-700">
+              Ortak nokta: Bilişim ailesi 4 yıldır geriliyor.
+            </div>
+          </div>
+
+          <div class="bg-slate-800/70 p-4 rounded-xl border-t-4 border-slate-400 border-x border-b border-slate-700 space-y-2">
+            <span class="badge bg-slate-700 text-slate-200">STABİL</span>
+            <div class="text-xs text-slate-300 leading-relaxed">
+              Eczacılık · Endüstri Müh. · İnşaat Müh. · Kimya Müh. · Mekatronik · Havacılık ve Uzay · Moleküler Biyoloji
+            </div>
+            <div class="text-[11px] text-slate-300 font-semibold pt-1 border-t border-slate-700">
+              Ortak nokta: Piyasa ortalamasının ±%5 içinde.
+            </div>
+          </div>
+
+          <div class="bg-slate-800/70 p-4 rounded-xl border-t-4 border-amber-500 border-x border-b border-slate-700 space-y-2">
+            <span class="badge badge-amber">YENİ / YÜKSELEN ARZ</span>
+            <div class="text-xs text-slate-300 leading-relaxed">
+              YZ & Veri: 98 → 122 program (+%32 kontenjan). Robotik ve Otonom Sis, Paramedik + YZ çift alanları.
+            </div>
+            <div class="text-[11px] text-amber-300 font-semibold pt-1 border-t border-slate-700">
+              Dikkat: Yeni isim ≠ yüksek talep!
+            </div>
+          </div>
+        </div>
+
+        <div class="text-[11px] text-slate-400">
+          Ölçüt: Göreli talep endeksi (2025 → 2026) ve 4 yıllık yön (2023 → 2026). Kaynak: YÖK Atlas, ÖSYM Tablo 4.
+        </div>
+      </div>
+
+      <!-- SLAYT 20 -->
+      <div class="slide-view flex-col justify-between h-full space-y-4" data-slide="20" data-title="2027 Senaryo Karnesi">
+        <div>
+          <span class="text-xs font-bold text-amber-400 uppercase tracking-widest">3 · 2027 PROJEKSİYONU · SENARYO / TAHMİN</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">2027 senaryo karnesi</h2>
+          <p class="text-slate-400 text-sm mt-1">İki eğilim aynı yönü gösteriyorsa sinyal daha güçlüdür.</p>
+        </div>
+
+        <div class="overflow-x-auto border border-slate-700 rounded-xl bg-slate-900 max-h-[300px]">
+          <table>
+            <thead>
+              <tr class="text-slate-400">
+                <th>Bölüm</th>
+                <th>4 Yıl (23-26)</th>
+                <th>Son Yıl (25-26)</th>
+                <th>Kontenjan</th>
+                <th>2027 Senaryosu (Güven)</th>
+              </tr>
+            </thead>
+            <tbody class="text-slate-200">
+              <tr><td><strong>Hukuk (EA)</strong></td><td class="font-mono text-rose-400">+12</td><td class="font-mono text-rose-400">+10</td><td class="font-mono text-rose-400">-13</td><td><span class="badge badge-rose">Rekabet artabilir (Yüksek)</span></td></tr>
+              <tr><td><strong>Hemşirelik</strong></td><td class="font-mono text-rose-400">+19</td><td class="font-mono text-rose-400">+9</td><td class="font-mono">+1</td><td><span class="badge badge-rose">Rekabet artabilir (Yüksek)</span></td></tr>
+              <tr><td><strong>Ebelik</strong></td><td class="font-mono text-rose-400">+17</td><td class="font-mono text-rose-400">+8</td><td class="font-mono">+2</td><td><span class="badge badge-rose">Rekabet artabilir (Yüksek)</span></td></tr>
+              <tr><td><strong>Tıp</strong></td><td class="font-mono text-rose-400">+12</td><td class="font-mono text-rose-400">+4</td><td class="font-mono">-1</td><td><span class="badge badge-rose">Rekabet artabilir (Orta-Yüksek)</span></td></tr>
+              <tr><td><strong>Elektrik-Elektronik</strong></td><td class="font-mono text-rose-400">+1</td><td class="font-mono text-rose-400">+6</td><td class="font-mono">0</td><td><span class="badge badge-rose">Yükselişe geçti (Orta)</span></td></tr>
+              <tr><td><strong>Eczacılık</strong></td><td class="font-mono">+4</td><td class="font-mono">-4</td><td class="font-mono">-10</td><td><span class="badge bg-slate-700 text-slate-300">Dengede (Belirsiz)</span></td></tr>
+              <tr><td><strong>Diş Hekimliği</strong></td><td class="font-mono">-3</td><td class="font-mono">-12</td><td class="font-mono">-11</td><td><span class="badge badge-blue">Hafif yumuşama (Orta)</span></td></tr>
+              <tr><td><strong>Psikoloji</strong></td><td class="font-mono">-54</td><td class="font-mono">-19</td><td class="font-mono">-7</td><td><span class="badge badge-blue">Fırsat sürebilir (Yüksek)</span></td></tr>
+              <tr><td><strong>Bilgisayar Müh.</strong></td><td class="font-mono">-122</td><td class="font-mono">-37</td><td class="font-mono">-5</td><td><span class="badge badge-blue">Fırsat sürebilir* (Orta)</span></td></tr>
+              <tr><td><strong>Yazılım Müh.</strong></td><td class="font-mono">-148</td><td class="font-mono">-39</td><td class="font-mono">-11</td><td><span class="badge badge-blue">Fırsat sürebilir* (Orta)</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="text-[11px] text-slate-400">
+          * 4 yıldır düşen alanlarda dipten dönüş riski mevcuttur. Senaryolar tahminidir, gerçekleşmiş veri değildir.
+        </div>
+      </div>
+
+      <!-- SLAYT 21 -->
+      <div class="slide-view flex-col justify-between h-full space-y-4" data-slide="21" data-title="Sağlık ve Hukuk: 2027 Anlamı">
+        <div>
+          <span class="text-xs font-bold text-rose-400 uppercase tracking-widest">3 · 2027 PROJEKSİYONU</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Sağlık ve hukuk: eğilim → 2027 → anlamı</h2>
+        </div>
+
+        <div class="overflow-x-auto border border-slate-700 rounded-xl bg-slate-900">
+          <table>
+            <thead>
+              <tr class="text-slate-400">
+                <th>Alan</th>
+                <th>Mevcut Eğilim (Gerçekleşen)</th>
+                <th>2027 Beklentisi</th>
+                <th>Öğrenci Açısından Anlamı</th>
+              </tr>
+            </thead>
+            <tbody class="text-slate-200">
+              <tr>
+                <td><strong>Tıp</strong></td>
+                <td>Medyan 18,6 bin → 14,5 bin; kontenjan sabit</td>
+                <td>Yukarı yönlü baskı sürebilir</td>
+                <td class="text-rose-300">2026 sırasının %10–15 üstünü hedefle; baraj 50 bin.</td>
+              </tr>
+              <tr>
+                <td><strong>Hemşirelik, Ebelik</strong></td>
+                <td>Hemşirelik 184 → 128 bin; ebelik 234 → 168 bin</td>
+                <td>Yükseliş sürebilir</td>
+                <td class="text-rose-300">Artık "garanti" değil: 100–150 bin bandına göre planla.</td>
+              </tr>
+              <tr>
+                <td><strong>Terapi Alanları (FTR, DKT)</strong></td>
+                <td>Fizyo 282 → 209 bin; DKT 144 → 80 bin</td>
+                <td>Rekabet artabilir</td>
+                <td class="text-rose-300">Yedek değil, ana hedef gibi hazırlan.</td>
+              </tr>
+              <tr>
+                <td><strong>Hukuk (EA)</strong></td>
+                <td>20,6 → 13,1 bin; kontenjan -%13, baraj 100 bin</td>
+                <td>Yüksek kalabilir; baraj belirleyici</td>
+                <td class="text-rose-300">EA'da ilk 15–20 bini hedefle; kılavuzu izle.</td>
+              </tr>
+              <tr>
+                <td><strong>Diş, Eczacılık</strong></td>
+                <td>Diş 35,9 → 32,2 bin; Eczacılık 50,9 → 42,3 bin</td>
+                <td>Dengede / hafif yumuşama</td>
+                <td class="text-slate-300">Kontenjan kesintisi sürerse yeniden sıkılaşabilir.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="text-[11px] text-slate-400">Medyolar: 2023–2026'da dört yılın tamamında başarı sırası olan aynı programlar (YÖK Atlas).</div>
+      </div>
+
+      <!-- SLAYT 22 -->
+      <div class="slide-view flex-col justify-between h-full space-y-4" data-slide="22" data-title="Mühendislik, Bilişim, Sosyal: 2027 Anlamı">
+        <div>
+          <span class="text-xs font-bold text-blue-400 uppercase tracking-widest">3 · 2027 PROJEKSİYONU</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Mühendislik, bilişim, sosyal: eğilim → 2027</h2>
+        </div>
+
+        <div class="overflow-x-auto border border-slate-700 rounded-xl bg-slate-900">
+          <table>
+            <thead>
+              <tr class="text-slate-400">
+                <th>Alan</th>
+                <th>Mevcut Eğilim (Gerçekleşen)</th>
+                <th>2027 Beklentisi</th>
+                <th>Öğrenci Açısından Anlamı</th>
+              </tr>
+            </thead>
+            <tbody class="text-slate-200">
+              <tr>
+                <td><strong>Bilgisayar, Yazılım</strong></td>
+                <td>BM 52 → 98 bin; Yazılım 56 → 122 bin; doluluk %67</td>
+                <td>Fırsat sürebilir; üstte dönüş olası</td>
+                <td class="text-blue-300">Hedefi son 2 yılın ortalamasına göre kur.</td>
+              </tr>
+              <tr>
+                <td><strong>YZ & Veri</strong></td>
+                <td>32 → 59 bin; program 98 → 122, kontenjan +%32</td>
+                <td>Arz arttıkça gevşeyebilir</td>
+                <td class="text-blue-300">Popüler isim ≠ yüksek rekabet; müfredata bak.</td>
+              </tr>
+              <tr>
+                <td><strong>Elektrik-Elk., Makine</strong></td>
+                <td>EEM 91,6 → 78,6 bin; Makine 102,7 → 84,6 bin</td>
+                <td>Rekabet hafif artabilir</td>
+                <td class="text-rose-300">Bilişimden kayan talep buraya yönelebilir.</td>
+              </tr>
+              <tr>
+                <td><strong>Endüstri, YBS</strong></td>
+                <td>4 yılda piyasanın gerisinde (göreli -%24 / -%21)</td>
+                <td>Dengede veya hafif fırsat</td>
+                <td class="text-slate-300">Orta sıralama bandında güçlü seçenek.</td>
+              </tr>
+              <tr>
+                <td><strong>Psikoloji, PDR (EA)</strong></td>
+                <td>Psikoloji ~100 binde sabit (EA ort. -%30 iken); 1.065 boş yer</td>
+                <td>Fırsat sürebilir; zirvede rekabet sürer</td>
+                <td class="text-blue-300">Boğaziçi/ODTÜ ~2 bin; fırsat orta segmentte.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SLAYT 23 -->
+      <div class="slide-view flex-col justify-between h-full space-y-4" data-slide="23" data-title="EA Bölümleri: 2027 Anlamı">
+        <div>
+          <span class="text-xs font-bold text-amber-400 uppercase tracking-widest">3 · 2027 PROJEKSİYONU · EŞİT AĞIRLIK</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">EA bölümleri: eğilim → 2027 → anlamı</h2>
+        </div>
+
+        <div class="overflow-x-auto border border-slate-700 rounded-xl bg-slate-900">
+          <table>
+            <thead>
+              <tr class="text-slate-400">
+                <th>Alan</th>
+                <th>Mevcut Eğilim (Gerçekleşen)</th>
+                <th>2027 Beklentisi</th>
+                <th>Öğrenci Açısından Anlamı</th>
+              </tr>
+            </thead>
+            <tbody class="text-slate-200">
+              <tr>
+                <td><strong>İktisat, Maliye, Ekonometri</strong></td>
+                <td>İktisat 713 → 307 bin; Maliye 747 → 322 bin (4 yıl)</td>
+                <td>Rekabet artabilir</td>
+                <td class="text-rose-300">"Nasılsa girerim" bölümü değil artık!</td>
+              </tr>
+              <tr>
+                <td><strong>Sosyal Hizmet, Sağlık Yön.</strong></td>
+                <td>Sosyal hizmet 527 → 305 bin; kontenjan -%19</td>
+                <td>Rekabet artabilir; kontenjan belirleyici</td>
+                <td class="text-rose-300">Kontenjan kesintisi sürerse sıkışma büyür.</td>
+              </tr>
+              <tr>
+                <td><strong>İşletme, Uluslararası İlişkiler</strong></td>
+                <td>İşletme 359 → 207 bin; Uİ 366 → 232 bin</td>
+                <td>Dengede</td>
+                <td class="text-slate-300">Üniversite ve yabancı dil seçimi sırayı belirler.</td>
+              </tr>
+              <tr>
+                <td><strong>Sınıf Öğretmenliği</strong></td>
+                <td>103 → 85 bin; kontenjan +%4,5; baraj 300 bin</td>
+                <td>Dengede / hafif gevşeme</td>
+                <td class="text-slate-300">85–100 bin bandı gerçekçi hedeftir.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SLAYT 24 -->
+      <div class="slide-view flex-col justify-between h-full space-y-5" data-slide="24" data-title="2027 İçin Beş Soru, Beş Kısa Cevap">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">3 · 2027 PROJEKSİYONU</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">2027 için beş soru, beş kısa cevap</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="bg-rose-950/20 p-4 rounded-xl border border-rose-900/60 space-y-1">
+            <strong class="text-rose-300 block">1. Rekabet nerede artabilir?</strong>
+            <p class="text-slate-300">Tıp, hukuk, hemşirelik-ebelik, terapi bölümleri, veteriner, elektrik-elektronik ve makine.</p>
+          </div>
+          <div class="bg-blue-950/20 p-4 rounded-xl border border-blue-900/60 space-y-1">
+            <strong class="text-blue-300 block">2. Fırsat nerede olabilir?</strong>
+            <p class="text-slate-300">Bilgisayar, yazılım, YZ & veri, psikoloji, PDR, mimarlık; ayrıca 21,8 bin boş vakıf yeri.</p>
+          </div>
+          <div class="bg-indigo-950/20 p-4 rounded-xl border border-indigo-900/60 space-y-1">
+            <strong class="text-indigo-300 block">3. Sıralar hangi yöne gidebilir?</strong>
+            <p class="text-slate-300">Sağlık ve hukukta yukarı (daha zor), bilişim ve psikolojide aşağı; bilişimde dönüş riskiyle birlikte.</p>
+          </div>
+          <div class="bg-amber-950/20 p-4 rounded-xl border border-amber-900/60 space-y-1">
+            <strong class="text-amber-300 block">4. Hangi eğilim dikkat çekici?</strong>
+            <p class="text-slate-300">Bilişimin 4 yıllık düşüşü, sağlığın 4 yıllık yükselişi ve 2026'daki puan şişmesi.</p>
+          </div>
+          <div class="md:col-span-2 bg-slate-800/80 p-4 rounded-xl border border-slate-700 space-y-1">
+            <strong class="text-white block">5. Ve en kritik uyarı:</strong>
+            <p class="text-slate-300">Hızla yükselen bölümde 2026 sırasıyla hedef kurmak, 2027'de "yetmedi" demenin en kısa yoludur!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLAYT 25 -->
+      <div class="slide-view flex-col justify-between h-full space-y-5" data-slide="25" data-title="SAY'da Bir Net Kaç Puan?">
+        <div>
+          <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest">4 · NET VE SIRALAMA İLİŞKİSİ (SAY)</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">SAY'da bir net kaç puan? Her net eşit değil</h2>
+          <p class="text-slate-400 text-sm mt-1">YÖK Atlas ~4.000 SAY programı son yerleşen netleri ve taban puan doğrusal regresyonu (R² ≈ 0,999).</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-center">
+          <div class="bg-slate-800/60 p-5 rounded-xl border border-slate-700 space-y-3 text-xs">
+            <div class="font-bold text-white text-sm border-b border-slate-700 pb-2">1 Netin SAY Puanına Katkısı (3 Yıllık Ortalama)</div>
+            <div class="space-y-2">
+              <div class="flex justify-between p-2 rounded bg-slate-900 font-mono"><span>AYT Matematik (40 soru):</span><strong class="text-emerald-400 text-sm">~3,0 Puan</strong></div>
+              <div class="flex justify-between p-2 rounded bg-slate-900 font-mono"><span>AYT Kimya (13 soru):</span><strong class="text-emerald-400 text-sm">~2,9 Puan</strong></div>
+              <div class="flex justify-between p-2 rounded bg-slate-900 font-mono"><span>AYT Biyoloji (13 soru):</span><strong class="text-emerald-400 text-sm">~2,7 Puan</strong></div>
+              <div class="flex justify-between p-2 rounded bg-slate-900 font-mono"><span>AYT Fizik (14 soru):</span><strong class="text-emerald-400 text-sm">~2,5 Puan</strong></div>
+              <div class="flex justify-between p-2 rounded bg-slate-900 font-mono text-slate-400"><span>TYT Türkçe / Mat / Sosyal / Fen:</span><strong>~1,2 – 1,3 Puan</strong></div>
+            </div>
+          </div>
+
+          <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700 space-y-3 text-xs leading-relaxed">
+            <div class="font-bold text-emerald-300 text-sm">💡 Bu veri bize ne söylüyor?</div>
+            <p class="text-slate-300">
+              <strong>1 AYT neti ≈ 2,7–3,0 puan | 1 TYT neti ≈ 1,2 puan:</strong> Bir AYT neti iki TYT netinden daha değerlidir!
+            </p>
+            <p class="text-slate-300">
+              <strong>En değerli net:</strong> AYT Matematik (~3 puan, 40 soru).
+            </p>
+            <p class="text-slate-300">
+              <strong>Diploma notu gerçeği:</strong> Diploma notunda 10 puan fark ≈ 6 puan ≈ <strong>2 AYT neti</strong> demektir! OBP asla göz ardı edilemez.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLAYT 26 -->
+      <div class="slide-view flex-col justify-between h-full space-y-4" data-slide="26" data-title="Aynı Sıra İçin Gereken Net Değişiyor (SAY)">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">4 · NET VE SIRALAMA İLİŞKİSİ (SAY)</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Aynı sıra için gereken net her yıl değişiyor</h2>
+        </div>
+
+        <div class="overflow-x-auto border border-slate-700 rounded-xl bg-slate-900 max-h-[300px]">
+          <table>
+            <thead>
+              <tr class="text-slate-400">
+                <th>Başarı Sırası</th>
+                <th>TYT 2023</th>
+                <th>TYT 2024</th>
+                <th>TYT 2025</th>
+                <th>AYT 2023</th>
+                <th>AYT 2024</th>
+                <th>AYT 2025</th>
+              </tr>
+            </thead>
+            <tbody class="text-slate-200 font-mono text-xs">
+              <tr><td>1–5 bin</td><td>107,5</td><td>109,6</td><td>104,1</td><td>76,2</td><td class="text-rose-400 font-bold">72,8</td><td>75,2</td></tr>
+              <tr><td>5–10 bin</td><td>105,2</td><td>104,0</td><td>99,5</td><td>73,0</td><td class="text-rose-400 font-bold">68,2</td><td>71,5</td></tr>
+              <tr><td>10–20 bin</td><td>101,2</td><td>100,9</td><td>94,6</td><td>70,2</td><td class="text-rose-400 font-bold">63,8</td><td>67,9</td></tr>
+              <tr><td>20–35 bin</td><td>95,8</td><td>96,0</td><td>88,5</td><td>65,5</td><td class="text-rose-400 font-bold">58,1</td><td>64,0</td></tr>
+              <tr><td>35–50 bin</td><td>91,8</td><td>91,2</td><td>84,0</td><td>61,2</td><td class="text-rose-400 font-bold">52,5</td><td>59,5</td></tr>
+              <tr><td>50–75 bin</td><td>86,8</td><td>86,0</td><td>81,2</td><td>55,5</td><td class="text-rose-400 font-bold">47,5</td><td>54,2</td></tr>
+              <tr><td>75–100 bin</td><td>80,0</td><td>80,8</td><td>77,5</td><td>49,8</td><td class="text-rose-400 font-bold">40,8</td><td>47,0</td></tr>
+              <tr><td>100–150 bin</td><td>74,5</td><td>73,2</td><td>71,2</td><td>41,2</td><td class="text-rose-400 font-bold">33,8</td><td>39,5</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="bg-slate-800/60 p-3 rounded-xl border border-slate-700 text-xs text-slate-300">
+          <strong>Analiz:</strong> 2024'te AYT zordu; aynı sıra 6–9 AYT neti daha azla geldi. 2025'te ise TYT zordu. İlk 10 binde AYT zaten tavana yakındır; fark TYT'de açılır.
+        </div>
+      </div>
+
+      <!-- SLAYT 27 -->
+      <div class="slide-view flex-col justify-between h-full space-y-5" data-slide="27" data-title="SAY Net Bandı -> Sıralama Bandı">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">4 · GRAFİK 7 · SAY</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">SAY net bandı → yaklaşık sıralama bandı</h2>
+          <p class="text-slate-400 text-sm mt-1">Aynı toplam net, sınava göre farklı sıralama getirir.</p>
+        </div>
+
+        <div class="overflow-x-auto border border-slate-700 rounded-xl bg-slate-900">
+          <table>
+            <thead>
+              <tr class="text-slate-400">
+                <th>Toplam Net (TYT+AYT)</th>
+                <th>İddialı (En İyi Yıl)</th>
+                <th>Gerçekçi (3 Yıl Ortalaması)</th>
+                <th>Güvenli (Zor Yıl)</th>
+              </tr>
+            </thead>
+            <tbody class="text-slate-200 font-mono text-xs">
+              <tr><td>180–190 Net</td><td>1,9 bin</td><td>2,4 bin</td><td>4,8 bin</td></tr>
+              <tr><td>170–180 Net</td><td>5,8 bin</td><td>8,4 bin</td><td>14 bin</td></tr>
+              <tr><td>160–170 Net</td><td>14 bin</td><td>18 bin</td><td>28 bin</td></tr>
+              <tr><td>150–160 Net</td><td>26 bin</td><td>31 bin</td><td>43 bin</td></tr>
+              <tr class="bg-indigo-950/30 font-bold"><td>140–150 Net</td><td class="text-emerald-400">42 bin</td><td class="text-indigo-400">45 bin</td><td class="text-rose-400">63 bin</td></tr>
+              <tr><td>120–140 Net</td><td>67 bin</td><td>76 bin</td><td>101 bin</td></tr>
+              <tr><td>100–120 Net</td><td>117 bin</td><td>130 bin</td><td>163 bin</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="bg-slate-800/60 p-3 rounded-xl border border-slate-700 text-xs text-slate-300">
+          <strong>Çıkarım:</strong> Tek bir net, tek bir sıra getirmez: 140–150 net 42 bin ile 63 bin arasında bir yere düşebilir! Sebep: sınavın zorluğu, yığılma ve OBP.
+        </div>
+      </div>
+
+      <!-- SLAYT 28 -->
+      <div class="slide-view flex-col justify-between h-full space-y-5" data-slide="28" data-title="EA'da Bir Net Kaç Puan?">
+        <div>
+          <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest">4 · NET VE SIRALAMA İLİŞKİSİ (EA)</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">EA'da bir net kaç puan?</h2>
+          <p class="text-slate-400 text-sm mt-1">YÖK Atlas ~2.200 EA programı son yerleşen netleri ve taban puan doğrusal regresyonu.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-center">
+          <div class="bg-slate-800/60 p-5 rounded-xl border border-slate-700 space-y-3 text-xs">
+            <div class="font-bold text-white text-sm border-b border-slate-700 pb-2">1 Netin EA Puanına Katkısı (3 Yıllık Ortalama)</div>
+            <div class="space-y-2">
+              <div class="flex justify-between p-2 rounded bg-slate-900 font-mono"><span>AYT Matematik (40 soru):</span><strong class="text-emerald-400 text-sm">~3,0 Puan</strong></div>
+              <div class="flex justify-between p-2 rounded bg-slate-900 font-mono"><span>AYT Edebiyat (24 soru):</span><strong class="text-emerald-400 text-sm">~3,0 Puan</strong></div>
+              <div class="flex justify-between p-2 rounded bg-slate-900 font-mono"><span>AYT Tarih-1 (10 soru):</span><strong class="text-emerald-400 text-sm">~2,7 Puan</strong></div>
+              <div class="flex justify-between p-2 rounded bg-slate-900 font-mono"><span>AYT Coğrafya-1 (6 soru):</span><strong class="text-emerald-400 text-sm">~2,8 Puan</strong></div>
+              <div class="flex justify-between p-2 rounded bg-slate-900 font-mono text-slate-400"><span>TYT Netleri:</span><strong>~1,2 Puan</strong></div>
+            </div>
+          </div>
+
+          <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700 space-y-3 text-xs leading-relaxed">
+            <div class="font-bold text-emerald-300 text-sm">💡 Bu veri bize ne söylüyor?</div>
+            <p class="text-slate-300">
+              <strong>EA'da da bir AYT neti ≈ iki TYT neti:</strong> Net başına değer benzerdir ama büyüme alanı matematiktir.
+            </p>
+            <p class="text-slate-300">
+              AYT Matematikte 40 soru vardır ve ortalama aday sadece 7 net yapmaktadır. En geniş fark atma potansiyeli oradadır.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLAYT 29 -->
+      <div class="slide-view flex-col justify-between h-full space-y-4" data-slide="29" data-title="EA'da Sıralamayı Matematik Ayırıyor">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">4 · NET VE SIRALAMA İLİŞKİSİ (EA)</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">EA'da sıralamayı en çok matematik ayırıyor</h2>
+        </div>
+
+        <div class="overflow-x-auto border border-slate-700 rounded-xl bg-slate-900 max-h-[300px]">
+          <table>
+            <thead>
+              <tr class="text-slate-400">
+                <th>Başarı Sırası</th>
+                <th>TYT 2023</th>
+                <th>TYT 2024</th>
+                <th>TYT 2025</th>
+                <th>AYT Mat 2023</th>
+                <th>AYT Mat 2024</th>
+                <th>AYT Mat 2025</th>
+                <th>TDE 2025</th>
+              </tr>
+            </thead>
+            <tbody class="text-slate-200 font-mono text-xs">
+              <tr><td>1–5 bin</td><td>91,2</td><td>91,8</td><td>83,2</td><td>30,8</td><td>27,0</td><td class="text-emerald-400 font-bold">29,0</td><td>19,0</td></tr>
+              <tr><td>5–10 bin</td><td>84,0</td><td>82,1</td><td>77,8</td><td>26,8</td><td>22,0</td><td class="text-emerald-400 font-bold">23,8</td><td>17,8</td></tr>
+              <tr><td>10–20 bin</td><td>77,2</td><td>79,2</td><td>71,8</td><td>24,8</td><td>18,8</td><td class="text-emerald-400 font-bold">22,5</td><td>18,0</td></tr>
+              <tr><td>20–35 bin</td><td>73,2</td><td>74,1</td><td>71,2</td><td>20,8</td><td>16,2</td><td class="text-emerald-400 font-bold">18,8</td><td>17,0</td></tr>
+              <tr><td>50–75 bin</td><td>69,2</td><td>67,8</td><td>65,2</td><td>17,4</td><td>11,6</td><td class="text-emerald-400 font-bold">14,0</td><td>16,5</td></tr>
+              <tr><td>100–150 bin</td><td>60,8</td><td>59,0</td><td>57,5</td><td>13,2</td><td>7,5</td><td class="text-emerald-400 font-bold">9,8</td><td>15,2</td></tr>
+              <tr><td>200–300 bin</td><td>54,0</td><td>51,0</td><td>50,4</td><td>8,5</td><td>4,2</td><td class="text-emerald-400 font-bold">5,6</td><td>14,0</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="bg-slate-800/60 p-3 rounded-xl border border-slate-700 text-xs text-slate-300">
+          <strong>Kritik Okuma:</strong> İlk 5 binden 300 bine inerken AYT Matematik 29'dan 6 nete düşüyor (-23 net); TDE ise 19'dan 14'e düşüyor (-5 net). Sırayı belirleyen asıl test AYT Matematiktir.
+        </div>
+      </div>
+
+      <!-- SLAYT 30 -->
+      <div class="slide-view flex-col justify-between h-full space-y-5" data-slide="30" data-title="EA Net Bandı -> Sıralama Bandı">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">4 · GRAFİK 7 · EA</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">EA net bandı → yaklaşık sıralama bandı</h2>
+          <p class="text-slate-400 text-sm mt-1">10 net fark, EA sıralamasında devasa fark yaratır.</p>
+        </div>
+
+        <div class="overflow-x-auto border border-slate-700 rounded-xl bg-slate-900">
+          <table>
+            <thead>
+              <tr class="text-slate-400">
+                <th>Toplam Net (TYT+AYT EA)</th>
+                <th>İddialı (En İyi Yıl)</th>
+                <th>Gerçekçi (3 Yıl Ortalaması)</th>
+                <th>Güvenli (Zor Yıl)</th>
+              </tr>
+            </thead>
+            <tbody class="text-slate-200 font-mono text-xs">
+              <tr><td>140–160 Net</td><td>1,9 bin</td><td>2,2 bin</td><td>5,5 bin</td></tr>
+              <tr><td>130–140 Net</td><td>5,8 bin</td><td>8,3 bin</td><td>14 bin</td></tr>
+              <tr class="bg-indigo-950/30 font-bold"><td>120–130 Net (Hukuk Bandı)</td><td class="text-emerald-400">14 bin</td><td class="text-indigo-400">19 bin</td><td class="text-rose-400">32 bin</td></tr>
+              <tr><td>110–120 Net</td><td>32 bin</td><td>41 bin</td><td>64 bin</td></tr>
+              <tr><td>100–110 Net</td><td>68 bin</td><td>77 bin</td><td>110 bin</td></tr>
+              <tr><td>90–100 Net</td><td>115 bin</td><td>123 bin</td><td>161 bin</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="bg-slate-800/60 p-3 rounded-xl border border-slate-700 text-xs text-slate-300">
+          <strong>Hukuk İçin Önemli Not:</strong> Hukukun ilk 15–20 bini için gerçekçi bant 120–130 toplam nettir. EA'da 10 net, sırayı yaklaşık ikiye katlar: 100–110 net ~77 bin iken, 110–120 net ~41 bindir.
+        </div>
+      </div>
+
+      <!-- SLAYT 31 -->
+      <div class="slide-view flex-col justify-between h-full space-y-5" data-slide="31" data-title="Kendi Bandını Üç Adımda Kur (SAY)">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">4 · MODEL · GÜVENLİ – GERÇEKÇİ – İDDİALI</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Kendi bandını üç adımda kur: SAY örneği</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div class="bg-slate-800/70 p-5 rounded-xl border border-slate-700 space-y-3">
+            <div class="font-bold text-indigo-400 text-sm">Adım 1 · Neredesin?</div>
+            <p class="text-xs text-slate-300">Son 5 denemenin ortalaması: TYT 95 + AYT 50 = <strong>145 Net</strong>.</p>
+            <div class="space-y-1 text-xs font-mono">
+              <div class="flex justify-between p-1.5 rounded bg-slate-900"><span>İddialı:</span><strong>42 bin</strong></div>
+              <div class="flex justify-between p-1.5 rounded bg-slate-900"><span>Gerçekçi:</span><strong>45 bin</strong></div>
+              <div class="flex justify-between p-1.5 rounded bg-slate-900"><span>Güvenli:</span><strong>63 bin</strong></div>
+            </div>
+          </div>
+
+          <div class="bg-slate-800/70 p-5 rounded-xl border border-slate-700 space-y-3">
+            <div class="font-bold text-blue-400 text-sm">Adım 2 · Nereye?</div>
+            <p class="text-xs text-slate-300">Hedef program 2024–2026'da <strong>30–35 binde</strong> kapatmış.</p>
+            <div class="text-xs text-slate-300 space-y-1.5">
+              <div>• 150–160 net: gerçekçi 31 bin, güvenli 43 bin.</div>
+              <div>• 160–170 net: güvenli 28 bin.</div>
+              <div class="font-bold text-white pt-1">Güvenli hedef: 160+ Net.</div>
+            </div>
+          </div>
+
+          <div class="bg-slate-800/70 p-5 rounded-xl border border-slate-700 space-y-3">
+            <div class="font-bold text-emerald-400 text-sm">Adım 3 · Nasıl?</div>
+            <p class="text-xs text-slate-300">Açık: <strong>+15 net</strong>. Hepsini TYT'den almak ≈ 18 puan; AYT'den almak ≈ 40 puan.</p>
+            <div class="p-3 bg-emerald-950/40 border border-emerald-800/60 rounded text-xs text-emerald-200 font-semibold">
+              Eylem Planı: +10 AYT Neti (önce Matematik) + 5 TYT Neti.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLAYT 32 -->
+      <div class="slide-view flex-col justify-between h-full space-y-5" data-slide="32" data-title="Hedef Sıra ve Çalışma Dengesi (SAY)">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">5 · STRATEJİ · SAY ÖĞRENCİSİ İÇİN DENGE</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Hedef sıran, çalışma dengeni belirler</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+          <div class="bg-slate-800/70 p-4 rounded-xl border-t-4 border-purple-500 border-slate-700 space-y-2">
+            <div class="font-bold text-white text-sm">HEDEF İLK 20 BİN</div>
+            <div class="text-slate-300">Son yerleşenler AYT'de 64–76 net yapar (tavana yakın).</div>
+            <div class="text-purple-300 font-semibold">Fark TYT'de açılıyor: 95–110 net.</div>
+            <p class="text-slate-400">AYT'de hatayı sıfırla, TYT'yi 100+ yap, OBP'ni koru.</p>
+          </div>
+
+          <div class="bg-slate-800/70 p-4 rounded-xl border-t-4 border-indigo-500 border-slate-700 space-y-2">
+            <div class="font-bold text-white text-sm">HEDEF 20–100 BİN</div>
+            <div class="text-slate-300">AYT 41–66 net, TYT 78–96 net bandı.</div>
+            <div class="text-indigo-300 font-semibold">+10 AYT neti ≈ 26 puan ≈ 18–28 bin sıra kazandırır!</div>
+            <p class="text-slate-400">En ucuz sıralama AYT Matematik ve fendedir.</p>
+          </div>
+
+          <div class="bg-slate-800/70 p-4 rounded-xl border-t-4 border-blue-500 border-slate-700 space-y-2">
+            <div class="font-bold text-white text-sm">HEDEF 100–300 BİN</div>
+            <div class="text-slate-300">AYT 19–41 net, TYT 59–75 net.</div>
+            <div class="text-blue-300 font-semibold">+10 AYT neti ≈ 45 bin sıra kazandırır!</div>
+            <p class="text-slate-400">TYT Mat-Fen + AYT Mat'ın temel net getiren konuları.</p>
+          </div>
+        </div>
+
+        <div class="p-4 bg-slate-900 border border-slate-700 rounded-xl flex items-center justify-between text-xs">
+          <span class="text-slate-200"><strong>7 / 40 Net Gerçeği:</strong> Ortalama aday AYT Matematikte 7 net, TYT Matematikte 6 net yapıyor. Matematikteki her net seni kitlenin önüne taşır.</span>
+        </div>
+      </div>
+
+      <!-- SLAYT 33 -->
+      <div class="slide-view flex-col justify-between h-full space-y-5" data-slide="33" data-title="Hedef Sıra ve Çalışma Dengesi (EA)">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">5 · STRATEJİ · EŞİT AĞIRLIK ÖĞRENCİSİ İÇİN DENGE</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">EA'da TDE tabanı korur, matematik sırayı taşır</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+          <div class="bg-slate-800/70 p-4 rounded-xl border-t-4 border-purple-500 border-slate-700 space-y-2">
+            <div class="font-bold text-white text-sm">HEDEF İLK 20 BİN</div>
+            <div class="text-slate-300">Son yerleşenler: TYT 72–101, AYT Mat 19–38, TDE 18–22.</div>
+            <p class="text-purple-300 font-semibold">TDE'yi 20 civarında sabitle; farkı AYT Mat ve TYT'de aç.</p>
+          </div>
+
+          <div class="bg-slate-800/70 p-4 rounded-xl border-t-4 border-indigo-500 border-slate-700 space-y-2">
+            <div class="font-bold text-white text-sm">HEDEF 20–100 BİN</div>
+            <div class="text-slate-300">TYT 61–74, AYT Mat 10–22.</div>
+            <p class="text-indigo-300 font-semibold">+10 AYT Mat neti ≈ 29 puan ≈ 30 bin sıra kazandırır.</p>
+          </div>
+
+          <div class="bg-slate-800/70 p-4 rounded-xl border-t-4 border-blue-500 border-slate-700 space-y-2">
+            <div class="font-bold text-white text-sm">HEDEF 100–300 BİN</div>
+            <div class="text-slate-300">TYT 50–61, AYT Mat 4–13.</div>
+            <p class="text-blue-300 font-semibold">+10 AYT Mat neti ≈ 100 bin sıra kazandırır (150 bin civarında).</p>
+          </div>
+        </div>
+
+        <div class="p-3 bg-indigo-950/40 border border-indigo-800/80 rounded-xl text-xs text-indigo-200">
+          <strong>105 → 115 Net:</strong> EA'da 105 net gerçekçi ~77 bin, 115 net ~41 bin. 10 netlik artış hedeflenebilir bölümleri tamamen değiştirir.
+        </div>
+      </div>
+
+      <!-- SLAYT 34 -->
+      <div class="slide-view flex-col justify-between h-full space-y-5" data-slide="34" data-title="Denemeyi Sıralama Bandı Olarak Oku">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">5 · STRATEJİ · DENEME TAKİBİ</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Denemeyi net değil, sıralama bandı olarak oku</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="bg-slate-800/70 p-4 rounded-xl border border-slate-700 space-y-1.5">
+            <strong class="text-white block text-sm">1 · Tek deneme değil, ortalama</strong>
+            <p class="text-slate-300">Son 4–5 denemenin ortalamasını izle; tek sonuç ±10 net oynayabilir.</p>
+          </div>
+          <div class="bg-slate-800/70 p-4 rounded-xl border border-slate-700 space-y-1.5">
+            <strong class="text-white block text-sm">2 · Neti banda çevir</strong>
+            <p class="text-slate-300">Toplam netini iddialı / gerçekçi / güvenli sıra bandına çevir.</p>
+          </div>
+          <div class="bg-slate-800/70 p-4 rounded-xl border border-slate-700 space-y-1.5">
+            <strong class="text-white block text-sm">3 · Puan getirisine göre öncelik</strong>
+            <p class="text-slate-300">Eksik × net değeri: 5 AYT Mat açığı ≈ 15 puan; 5 TYT Sosyal açığı ≈ 6 puan.</p>
+          </div>
+          <div class="bg-slate-800/70 p-4 rounded-xl border border-slate-700 space-y-1.5">
+            <strong class="text-white block text-sm">4 · Türkiye sıralamasını yüzdeliğe çevir</strong>
+            <p class="text-slate-300">2026'da SAY ilk 50 bin ≈ ilk %4,4 | EA ilk 50 bin ≈ ilk %3,5.</p>
+          </div>
+        </div>
+
+        <div class="bg-slate-800/90 p-3 rounded-xl border border-slate-700 text-xs text-slate-300">
+          <strong>Dikkat:</strong> Deneme kitlesi gerçek YKS kitlesi değildir; deneme sıralaması yalnızca yaklaşık bir göstergedir.
+        </div>
+      </div>
+
+      <!-- SLAYT 35 -->
+      <div class="slide-view flex-col justify-between h-full space-y-5" data-slide="35" data-title="Hedef Sıranı Trende Göre Ayarla">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">5 · STRATEJİ · HEDEF SIRALAMA VE KONTENJAN</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Hedef sıranı trende ve kontenjana göre ayarla</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
+          <div class="bg-slate-800/70 p-5 rounded-xl border border-slate-700 space-y-2.5">
+            <div class="font-bold text-white text-sm border-b border-slate-700 pb-2">Hedef Sıralama Nasıl Belirlenir?</div>
+            <div>1. Hedef programın son 3–4 yıl sırasını YÖK Atlas'tan al.</div>
+            <div>2. <strong>Yükselen bölüm (sağlık, hukuk):</strong> Son yıl sırasını %10–15 iyileştirerek hedef koy (Hukuk %27 sıkılaştı).</div>
+            <div>3. <strong>Düşen bölüm (bilişim):</strong> 2026'yı değil, son 2 yılın ortalamasını baz al; dipten dönüş olabilir.</div>
+            <div>4. Piyasa etkisini unutma: SAY sıraları 2026'da kendiliğinden %9 küçüldü.</div>
+          </div>
+
+          <div class="bg-slate-800/70 p-5 rounded-xl border border-slate-700 space-y-2.5">
+            <div class="font-bold text-white text-sm border-b border-slate-700 pb-2">Kontenjan Nasıl Okunur?</div>
+            <p class="text-slate-300">Temmuz'da kılavuz çıkınca hedef programın kontenjanını geçen yılla kıyasla:</p>
+            <div class="p-2 rounded bg-rose-950/30 border border-rose-900/50"><strong>Kontenjan ↓ + talep ↑:</strong> Çifte sıkışma (Hukuk 2026).</div>
+            <div class="p-2 rounded bg-blue-950/30 border border-blue-900/50"><strong>Kontenjan ↑ + talep ↓:</strong> Fırsat alanı (YZ & Veri 2026).</div>
+            <div class="pt-1 text-[11px] text-amber-300">Barajlar: Tıp 50k, Diş 80k, Eczacılık & Hukuk 100k, Mimarlık 250k, Müh. 300k.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLAYT 36 -->
+      <div class="slide-view flex-col justify-between h-full space-y-5" data-slide="36" data-title="Popülerliği Ölç, Kendini Konumlandır">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">5 · STRATEJİ · POPÜLERLİK VE KENDİNİ KONUMLANDIRMA</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Popülerliği ölç, kendini kitleye göre yerleştir</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
+          <div class="bg-slate-800/70 p-5 rounded-xl border border-slate-700 space-y-3">
+            <div class="font-bold text-white text-sm border-b border-slate-700 pb-2">Popüler Bölümde Rekabet Nasıl Okunur?</div>
+            <p class="text-slate-300"><strong>Göreli Değişim:</strong> Bölümün sırası puan türü ortalamasından (SAY -%9) hızlı mı küçülüyor?</p>
+            <p class="text-slate-300"><strong>Doluluk Oranı:</strong> Popüler isim yerlerin dolduğu anlamına gelmez (2026'da yazılım %67, dijital oyun %50 doldu).</p>
+            <p class="text-slate-300"><strong>Üst ve orta segment ayrıdır:</strong> Psikoloji genel olarak gevşedi ama Boğaziçi ve ODTÜ hâlâ ~2 bindir.</p>
+          </div>
+
+          <div class="bg-slate-800/70 p-5 rounded-xl border border-slate-700 space-y-3">
+            <div class="font-bold text-indigo-300 text-sm border-b border-slate-700 pb-2">Rakiplerin Kim?</div>
+            <div class="space-y-2">
+              <div class="p-2 rounded bg-slate-900"><strong>%30 Son Sınıf:</strong> 2026'da yerleşenlerin yalnızca %30'u son sınıf, %52'si önceki yıllarda yerleşememiş mezundur.</div>
+              <div class="p-2 rounded bg-slate-900"><strong>+%9 Fen Lisesi Artışı:</strong> Puanı hesaplanan Fen lisesi adayı 61,4 binden 67 bine çıktı.</div>
+              <div class="p-2 rounded bg-slate-900"><strong>1,14 Milyon:</strong> SAY puanı alan aday havuzu. İlk 10 bin ≈ ilk %0,9'dur.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLAYT 37 -->
+      <div class="slide-view flex-col justify-between h-full space-y-4" data-slide="37" data-title="Sonuç: 10 Altın Strateji">
+        <div>
+          <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest">SONUÇ BİLDİRGESİ</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">YKS'yi veriyle okumak: 10 strateji</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
+          <div class="p-2.5 rounded bg-slate-800/80 border border-slate-700"><strong>1. Puanla değil sırayla hedef koy:</strong> 450 SAY puanı 2025'te 46 bin, 2026'da 64 bindi.</div>
+          <div class="p-2.5 rounded bg-slate-800/80 border border-slate-700"><strong>2. Sıra değişimini piyasayla kıyasla:</strong> SAY sıraları 2026'da kendiliğinden %9 küçüldü.</div>
+          <div class="p-2.5 rounded bg-slate-800/80 border border-slate-700"><strong>3. Hedefin bir aralık olsun:</strong> 140–150 net iddialı 42 bin, güvenli 63 bindir.</div>
+          <div class="p-2.5 rounded bg-slate-800/80 border border-slate-700"><strong>4. AYT netine öncelik ver:</strong> SAY ve EA'da 1 AYT neti ≈ 2,7–3 puan; 1 TYT neti ≈ 1,2 puan.</div>
+          <div class="p-2.5 rounded bg-slate-800/80 border border-slate-700"><strong>5. İlk 20 bin için TYT de şart:</strong> Orada AYT tavanda; fark 95–110 TYT netinde açılır.</div>
+          <div class="p-2.5 rounded bg-slate-800/80 border border-slate-700"><strong>6. En az 4 yıllık trende bak:</strong> ODTÜ Bilgisayar: 716 → 2.989. Tek yıla bakılmaz.</div>
+          <div class="p-2.5 rounded bg-slate-800/80 border border-slate-700"><strong>7. Kontenjanı talep yönüyle oku:</strong> Hukuk: -%13 kontenjan + yeni baraj = %27 sıkılaşma.</div>
+          <div class="p-2.5 rounded bg-slate-800/80 border border-slate-700"><strong>8. Yükselen alanda güvenlik payı bırak:</strong> Sağlık ve hukukta son yıl sırasından %10–15 iyisini hedefle.</div>
+          <div class="p-2.5 rounded bg-slate-800/80 border border-slate-700"><strong>9. Düşen alanda dibe güvenme:</strong> Bilişimde son 2 yılın ortalamasını baz al.</div>
+          <div class="p-2.5 rounded bg-slate-800/80 border border-slate-700"><strong>10. Diploma notunu ihmal etme:</strong> 10 not puanı ≈ 6 puan ≈ 2 tam AYT neti.</div>
+        </div>
+      </div>
+
+      <!-- SLAYT 38 -->
+      <div class="slide-view flex-col justify-between h-full space-y-6" data-slide="38" data-title="Kaynaklar ve Sınırlar">
+        <div>
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">KAYNAKLAR VE NOTLAR</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Verinin kaynağı ve sınırları</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
+          <div class="bg-slate-800/70 p-5 rounded-xl border border-slate-700 space-y-3">
+            <div class="font-bold text-white text-sm border-b border-slate-700 pb-2">Gerçekleşen Veri Kaynakları</div>
+            <ul class="space-y-2 text-slate-300">
+              <li>• ÖSYM, 2025-YKS ve 2026-YKS Sayısal Bilgiler (21.07.2025; 21.07.2026)</li>
+              <li>• ÖSYM, 2025 ve 2026 YKS Yerleştirme Sonuçlarına İlişkin Sayısal Bilgiler</li>
+              <li>• ÖSYM, Tablo 4: En küçük ve en büyük puanlar (2025, 2026)</li>
+              <li>• YÖK Atlas (yokatlas.yok.gov.tr): 2023–2026 başarı sıraları, 2023–2025 SAY ve EA son yerleşen netleri, 2026 program koşulları (Erişim: Ekim 2026)</li>
+            </ul>
+          </div>
+
+          <div class="bg-slate-800/70 p-5 rounded-xl border border-slate-700 space-y-3">
+            <div class="font-bold text-amber-400 text-sm border-b border-slate-700 pb-2">Metodolojik Sınırlar</div>
+            <ul class="space-y-2 text-slate-300">
+              <li>• Program bazında tercih sayısı yayımlanmıyor; talep, sıra değişiminden dolaylı ölçüldü.</li>
+              <li>• YÖK Atlas dolmayan programlarda sıra vermiyor; bunlar hesaplamalara girmedi.</li>
+              <li>• 2026 son yerleşen netleri henüz yayımlanmadı; net-sıra modeli 2023–2025'e dayanıyor.</li>
+              <li>• 2027 senaryoları tahmindir; kesin sonuç değildir.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="p-4 bg-indigo-950/30 border border-indigo-800/60 rounded-xl flex items-center justify-between text-xs text-slate-300">
+          <div>Hazırlayan: <strong>Abdulsamet AĞDAŞ</strong> (Psikolojik Danışman · Uluslararası Fatih Sultan Mehmet AİHL)</div>
+          <button onclick="goToSlide(1)" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded font-semibold transition">Sunumu Yeniden Başlat ↺</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ================= ALT KONTROL & GEZİNME BAR ================= -->
+  <footer class="bg-slate-900/90 backdrop-blur-md border-t border-slate-800 px-4 py-3 flex items-center justify-between text-xs sticky bottom-0 z-40">
+    <div class="flex items-center gap-2">
+      <button onclick="prevSlide()" id="prevBtn" class="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-medium transition disabled:opacity-30 disabled:cursor-not-allowed">
+        ← Önceki
+      </button>
+      <button onclick="nextSlide()" id="nextBtn" class="px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition shadow-sm">
+        Sonraki →
+      </button>
+    </div>
+
+    <!-- Mevcut Slayt Başlığı -->
+    <div class="hidden sm:block text-slate-400 font-medium text-center truncate max-w-md" id="slideFooterTitle">
+      Kapak: YKS'yi Veriyle Okumak
+    </div>
+
+    <!-- Hızlı Gezinme & Kısayol İpuçları -->
+    <div class="flex items-center gap-2 text-slate-400 font-mono text-[11px]">
+      <span class="hidden md:inline text-slate-500">Klavye: [←] [→] veya [Boşluk]</span>
+    </div>
+  </footer>
+
+  <!-- ================= TÜM SLAYTLAR DİZİNİ MODALI ================= -->
+  <div id="indexModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-4xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
+        <h3 class="font-bold text-white text-sm flex items-center gap-2">
+          <span>📑</span> Sunum Dizin Haritası (38 Slayt)
+        </h3>
+        <button onclick="toggleIndexModal()" class="text-slate-400 hover:text-white text-lg font-bold p-1">&times;</button>
+      </div>
+      <div class="p-4 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2" id="indexList">
+        <!-- JS ile dolacak -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 38;
+    const slides = document.querySelectorAll('.slide-view');
+    const currentSlideNum = document.getElementById('currentSlideNum');
+    const progressBar = document.getElementById('progressBar');
+    const slideFooterTitle = document.getElementById('slideFooterTitle');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    // Slayt İsim Listesi (Modal İçin)
+    const slideTitles = [
+      "1. Kapak: YKS'yi Veriyle Okumak",
+      "2. Temel İlke: Veriyi Okumayı Öğrenmek",
+      "3. Veri Seti ve Yöntem: Hangi Veri Nasıl Okundu?",
+      "4. Temel Sayılar: 2025 → 2026 Değişim",
+      "5. Grafik 1: Aday, Kontenjan ve Yerleşen",
+      "6. Kontenjan, Yerleşme ve Boş Kalan Yerler",
+      "7. SAY Testlerinin Ortalama Netleri",
+      "8. EA Testlerinin Ortalama Netleri",
+      "9. SAY Puan ve Sıralama Dağılımı (Yığılma)",
+      "10. EA Puan ve Sıralama Dağılımı",
+      "11. Sıralama Okurken En Sık Yapılan Hata: -%9",
+      "12. Seçili Bölümler: 2025 → 2026 Değişim Tablosu",
+      "13. Grafik 3: Başarı Sırası Değişim Dağılımı",
+      "14. Grafik 5: Talebi Yükselen ve Düşen Bölümler",
+      "15. Grafik 3 EA: Başarı Sırası Değişimi",
+      "16. Grafik 5 EA: Talebi Yükselen ve Düşenler",
+      "17. Grafik 4: Kontenjan ve Başarı Sırası İlişkisi",
+      "18. Dört Yıllık Bakış: Tek Yıla Değil Trende Bak",
+      "19. Sınıflandırma: Bölümleri Dört Gruba Ayırdık",
+      "20. 2027 Senaryo Karnesi",
+      "21. Sağlık ve Hukuk: Eğilim → 2027 Anlamı",
+      "22. Mühendislik, Bilişim, Sosyal: Eğilim → 2027",
+      "23. EA Bölümleri: Eğilim → 2027 Anlamı",
+      "24. 2027 İçin Beş Soru, Beş Kısa Cevap",
+      "25. SAY'da Bir Net Kaç Puan? (Regresyon)",
+      "26. Aynı Sıra İçin Gereken Net Her Yıl Değişiyor",
+      "27. SAY Net Bandı → Yaklaşık Sıralama Bandı",
+      "28. EA'da Bir Net Kaç Puan?",
+      "29. EA'da Sıralamayı En Çok Matematik Ayırıyor",
+      "30. EA Net Bandı → Yaklaşık Sıralama Bandı",
+      "31. Kendi Bandını Üç Adımda Kur (SAY Örneği)",
+      "32. Strateji: SAY Öğrencisi İçin Denge",
+      "33. Strateji: Eşit Ağırlık Öğrencisi İçin Denge",
+      "34. Strateji: Denemeyi Sıralama Bandı Olarak Oku",
+      "35. Strateji: Hedef Sıranı Trende Göre Ayarla",
+      "36. Strateji: Popülerliği Ölç, Kendini Konumlandır",
+      "37. Sonuç: YKS'yi Veriyle Okumak: 10 Strateji",
+      "38. Kaynaklar ve Metodolojik Sınırlar"
+    ];
+
+    function showSlide(n) {
+      if (n < 1) n = 1;
+      if (n > totalSlides) n = totalSlides;
+      currentSlide = n;
+
+      slides.forEach(slide => {
+        const slideIndex = parseInt(slide.getAttribute('data-slide'));
+        slide.classList.toggle('active', slideIndex === currentSlide);
+      });
+
+      // Güncellemeler
+      currentSlideNum.textContent = currentSlide;
+      progressBar.style.width = ((currentSlide / totalSlides) * 100) + '%';
+      
+      const currentTitle = slides[currentSlide - 1].getAttribute('data-title') || slideTitles[currentSlide - 1];
+      slideFooterTitle.textContent = currentTitle;
+
+      prevBtn.disabled = (currentSlide === 1);
+      nextBtn.disabled = (currentSlide === totalSlides);
+      nextBtn.textContent = (currentSlide === totalSlides) ? 'Tamamlandı ✅' : 'Sonraki →';
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) showSlide(currentSlide + 1);
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) showSlide(currentSlide - 1);
+    }
+
+    function goToSlide(n) {
+      showSlide(n);
+      closeIndexModal();
+    }
+
+    // Klavye Desteği
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        showSlide(1);
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        showSlide(totalSlides);
+      } else if (e.key.toLowerCase() === 'f') {
+        toggleFullScreen();
+      } else if (e.key.toLowerCase() === 'm') {
+        toggleIndexModal();
+      } else if (e.key === 'Escape') {
+        closeIndexModal();
+      }
+    });
+
+    // Tam Ekran Fonksiyonu
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen().catch(() => {});
+        }
+      }
+    }
+
+    // Dizin Modal
+    function toggleIndexModal() {
+      const modal = document.getElementById('indexModal');
+      modal.classList.toggle('hidden');
+    }
+
+    function closeIndexModal() {
+      document.getElementById('indexModal').classList.add('hidden');
+    }
+
+    // Modal Listesini İnşa Et
+    const indexList = document.getElementById('indexList');
+    slideTitles.forEach((title, idx) => {
+      const btn = document.createElement('button');
+      btn.className = "text-left p-2.5 rounded-lg bg-slate-800/80 hover:bg-indigo-600/80 text-slate-300 hover:text-white text-xs transition border border-slate-700/60 flex items-center gap-2 truncate";
+      btn.innerHTML = `<span class="font-mono text-indigo-400 font-bold">${idx + 1}.</span> <span class="truncate">${title.split(': ')[1] || title}</span>`;
+      btn.onclick = () => goToSlide(idx + 1);
+      indexList.appendChild(btn);
+    });
+
+    // Sunum Süre Sayacı
+    let seconds = 0;
+    setInterval(() => {
+      seconds++;
+      const mins = String(Math.floor(seconds / 60)).padStart(2, '0');
+      const secs = String(seconds % 60).padStart(2, '0');
+      document.getElementById('timerDisplay').textContent = `${mins}:${secs}`;
+    }, 1000);
+
+    document.getElementById('presentationTimer').onclick = () => {
+      if (confirm('Sunum sayacını sıfırlamak istiyor musunuz?')) {
+        seconds = 0;
+        document.getElementById('timerDisplay').textContent = "00:00";
+      }
+    };
+
+    // İlk Yükleme
+    showSlide(1);
+  </script>
+</body>
+</html>
